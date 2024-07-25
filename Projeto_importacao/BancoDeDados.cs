@@ -1,15 +1,7 @@
 ﻿using FirebirdSql.Data.FirebirdClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static PortaFacil.personalizacao;
 
 namespace PortaFacil
 {
@@ -20,7 +12,6 @@ namespace PortaFacil
         public BancoDeDados()
         {
             InitializeComponent();
-            personalizarbotao();
             txtSenha.UseSystemPasswordChar = true;
             txtIp.Text = LastServerAddress;
             txtUsuario.Text = LastUser;
@@ -30,16 +21,8 @@ namespace PortaFacil
             txtDiretorio.Text = LastDiretorio;
 
         }
-        private void personalizarbotao()
-        {
-            Color corRoxo = Color.FromArgb(0x28, 0x0A, 0x3C);
-            IconManager.SetButtonIcon(btnSelecionarArquivo, Properties.Resources.BancoDeDados, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
-            IconManager.SetButtonIcon(btnExcluir, Properties.Resources.excluir, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
-            IconManager.SetButtonIcon(btnSalvar, Properties.Resources.save, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
 
-        }
-
-        private void btnSelecionarArquivo_Click(object sender, EventArgs e)
+        private void btnSelecionarArquivo_Click_1(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Arquivos de Banco de Dados (*.fdb)|*.fdb|Todos os Arquivos (*.*)|*.*";
@@ -64,7 +47,6 @@ namespace PortaFacil
                 txtSenha.Text = LastPassword;
                 txtDiretorio.Text = LastDiretorio;
             }
-
         }
         public static string SavedConnectionString { get; private set; }
         public void ConfigurarConnectionString()
@@ -126,18 +108,7 @@ namespace PortaFacil
 
             return connection;
         }
-
-        private void btnExcluir_Click(object sender, EventArgs e)
-        {
-            txtIp.Text = "";
-            txtBanco.Text = "";
-            txtPorta.Text = "";
-            txtSenha.Text = "";
-            txtUsuario.Text = "";
-            txtDiretorio.Text = "";
-        }
-
-        private void btnSalvar_Click(object sender, EventArgs e)
+        private void btnSalvar_Click_1(object sender, EventArgs e)
         {
 
             ConfigurarConnectionString();
@@ -159,6 +130,16 @@ namespace PortaFacil
 
             txtBanco.ReadOnly = true;
             AbrirConexaoBanco();
+        }
+
+        private void btnExcluir_Click_1(object sender, EventArgs e)
+        {
+            txtIp.Text = "";
+            txtBanco.Text = "";
+            txtPorta.Text = "";
+            txtSenha.Text = "";
+            txtUsuario.Text = "";
+            txtDiretorio.Text = "";
         }
     }
 }
