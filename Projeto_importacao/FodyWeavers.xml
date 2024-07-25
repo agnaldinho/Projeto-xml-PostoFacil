@@ -2,6 +2,8 @@
   <Costura>
     <IncludeAssemblies>
       FirebirdSql.Data.FirebirdClient
+      FontAwesome.Sharp
+	  System.Threading.Tasks.Extensions
     </IncludeAssemblies>
     <Unmanaged32Assemblies>
       fbclient

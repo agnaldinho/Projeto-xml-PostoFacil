@@ -27,12 +27,10 @@ C:\Projeto-XML\Projeto_importacao\obj\Release\PortaFacil.Properties.Resources.re
 D:\Projeto-xml\Projeto_importacao\bin\Release\Porta Fácil.exe.config
 D:\Projeto-xml\Projeto_importacao\bin\Release\Porta Fácil.exe
 D:\Projeto-xml\Projeto_importacao\bin\Release\Porta Fácil.pdb
-D:\Projeto-xml\Projeto_importacao\bin\Release\FontAwesome.Sharp.dll
 D:\Projeto-xml\Projeto_importacao\bin\Release\MetroFramework.Design.dll
 D:\Projeto-xml\Projeto_importacao\bin\Release\MetroFramework.dll
 D:\Projeto-xml\Projeto_importacao\bin\Release\MetroFramework.Fonts.dll
 D:\Projeto-xml\Projeto_importacao\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
-D:\Projeto-xml\Projeto_importacao\bin\Release\System.Threading.Tasks.Extensions.dll
 D:\Projeto-xml\Projeto_importacao\bin\Release\System.ValueTuple.dll
 D:\Projeto-xml\Projeto_importacao\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
 D:\Projeto-xml\Projeto_importacao\bin\Release\System.Threading.Tasks.Extensions.xml
