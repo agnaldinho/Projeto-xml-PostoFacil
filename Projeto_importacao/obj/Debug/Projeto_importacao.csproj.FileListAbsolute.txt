@@ -121,7 +121,6 @@ D:\Projeto-xml\Projeto_importacao\bin\Debug\MetroFramework.Design.dll
 D:\Projeto-xml\Projeto_importacao\bin\Debug\MetroFramework.dll
 D:\Projeto-xml\Projeto_importacao\bin\Debug\MetroFramework.Fonts.dll
 D:\Projeto-xml\Projeto_importacao\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-D:\Projeto-xml\Projeto_importacao\bin\Debug\System.Threading.Tasks.Extensions.dll
 D:\Projeto-xml\Projeto_importacao\bin\Debug\System.ValueTuple.dll
 D:\Projeto-xml\Projeto_importacao\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\Projeto-xml\Projeto_importacao\bin\Debug\System.Threading.Tasks.Extensions.xml

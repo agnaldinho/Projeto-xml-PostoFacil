@@ -393,7 +393,7 @@ namespace PortaFacil
                             string cidade = item.SubItems[6].Text;
                             string estado = item.SubItems[7].Text;
 
-                            string insertEndereco = "INSERT INTO endereco (pessoa_id, empresa_pessoa_id, ENDERECO, numero, bairro, cidade, uf,tipo_endereco) VALUES (@pessoa_id, @empresa_id, @rua, @numero, @bairro, @cidade, @estado, 2)";
+                            string insertEndereco = "INSERT INTO endereco (pessoa_id, empresa_pessoa_id, ENDERECO, numero, bairro, cidade, uf,tipo_endereco,pais_id) VALUES (@pessoa_id, @empresa_id, @rua, @numero, @bairro, @cidade, @estado, 2,1058)";
                             using (FbCommand cmd = new FbCommand(insertEndereco, conn, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@pessoa_id", pessoaIds[i]);
