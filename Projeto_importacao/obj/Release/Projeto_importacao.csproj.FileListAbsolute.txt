@@ -1,0 +1,53 @@
+C:\Projeto-XML\Projeto_importacao\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+C:\Projeto-XML\Projeto_importacao\bin\Release\System.Threading.Tasks.Extensions.xml
+C:\Projeto-XML\Projeto_importacao\bin\Release\System.ValueTuple.xml
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.csproj.AssemblyReference.cache
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.BancoDeDados.resources
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.carregamento.resources
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.Home.resources
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.ImportarClient.resources
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.ImportarProduto.resources
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.csproj.GenerateResource.cache
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.csproj.CoreCompileInputs.cache
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_importacao.csproj.Fody.CopyLocal.cache
+C:\Projeto-XML\Projeto_importacao\obj\Release\Projeto_.F43B6D8B.Up2Date
+C:\Projeto-XML\Projeto_importacao\bin\Release\Porta Fácil.exe.config
+C:\Projeto-XML\Projeto_importacao\bin\Release\Porta Fácil.exe
+C:\Projeto-XML\Projeto_importacao\bin\Release\Porta Fácil.pdb
+C:\Projeto-XML\Projeto_importacao\obj\Release\Porta Fácil.exe
+C:\Projeto-XML\Projeto_importacao\obj\Release\Porta Fácil.pdb
+C:\Projeto-XML\Projeto_importacao\bin\Release\FontAwesome.Sharp.dll
+C:\Projeto-XML\Projeto_importacao\bin\Release\MetroFramework.Design.dll
+C:\Projeto-XML\Projeto_importacao\bin\Release\MetroFramework.dll
+C:\Projeto-XML\Projeto_importacao\bin\Release\MetroFramework.Fonts.dll
+C:\Projeto-XML\Projeto_importacao\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+C:\Projeto-XML\Projeto_importacao\bin\Release\System.Threading.Tasks.Extensions.dll
+C:\Projeto-XML\Projeto_importacao\bin\Release\System.ValueTuple.dll
+C:\Projeto-XML\Projeto_importacao\obj\Release\PortaFacil.Properties.Resources.resources
+D:\Projeto-xml\Projeto_importacao\bin\Release\Porta Fácil.exe.config
+D:\Projeto-xml\Projeto_importacao\bin\Release\Porta Fácil.exe
+D:\Projeto-xml\Projeto_importacao\bin\Release\Porta Fácil.pdb
+D:\Projeto-xml\Projeto_importacao\bin\Release\FontAwesome.Sharp.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\MetroFramework.Design.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\MetroFramework.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\MetroFramework.Fonts.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\System.Runtime.CompilerServices.Unsafe.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\System.Threading.Tasks.Extensions.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\System.ValueTuple.dll
+D:\Projeto-xml\Projeto_importacao\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
+D:\Projeto-xml\Projeto_importacao\bin\Release\System.Threading.Tasks.Extensions.xml
+D:\Projeto-xml\Projeto_importacao\bin\Release\System.ValueTuple.xml
+D:\Projeto-xml\Projeto_importacao\obj\Release\Projeto_importacao.csproj.AssemblyReference.cache
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.BancoDeDados.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.carregamento.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.Home.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.ImportarClient.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.ImportarProduto.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.Properties.Resources.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\PortaFacil.Sobre.resources
+D:\Projeto-xml\Projeto_importacao\obj\Release\Projeto_importacao.csproj.GenerateResource.cache
+D:\Projeto-xml\Projeto_importacao\obj\Release\Projeto_importacao.csproj.CoreCompileInputs.cache
+D:\Projeto-xml\Projeto_importacao\obj\Release\Projeto_importacao.csproj.Fody.CopyLocal.cache
+D:\Projeto-xml\Projeto_importacao\obj\Release\Projeto_importacao.csproj.CopyComplete
+D:\Projeto-xml\Projeto_importacao\obj\Release\Porta Fácil.exe
+D:\Projeto-xml\Projeto_importacao\obj\Release\Porta Fácil.pdb

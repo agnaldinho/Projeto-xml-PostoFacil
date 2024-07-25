@@ -1,0 +1,86 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projeto-XML\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|c:\\projeto-xml\\projeto_importacao\\importarclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|solutionrelative:projeto_importacao\\importarclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|c:\\projeto-xml\\projeto_importacao\\importarclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|solutionrelative:projeto_importacao\\importarclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|c:\\projeto-xml\\projeto_importacao\\home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|solutionrelative:projeto_importacao\\home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|c:\\projeto-xml\\projeto_importacao\\home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C42EB6D0-A799-4877-A7F9-F5AB88538B56}|Projeto_importacao\\Projeto_importacao.csproj|solutionrelative:projeto_importacao\\home.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ImportarClient.cs",
+              "DocumentMoniker": "C:\\Projeto-XML\\Projeto_Importacao\\ImportarClient.cs",
+              "RelativeDocumentMoniker": "Projeto_Importacao\\ImportarClient.cs",
+              "ToolTip": "C:\\Projeto-XML\\Projeto_Importacao\\ImportarClient.cs",
+              "RelativeToolTip": "Projeto_Importacao\\ImportarClient.cs",
+              "ViewState": "AQIAAFcCAAAAAAAAAAAwwHACAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T15:20:49.51Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ImportarClient.cs [Design]",
+              "DocumentMoniker": "C:\\Projeto-XML\\Projeto_Importacao\\ImportarClient.cs",
+              "RelativeDocumentMoniker": "Projeto_Importacao\\ImportarClient.cs",
+              "ToolTip": "C:\\Projeto-XML\\Projeto_Importacao\\ImportarClient.cs [Design]",
+              "RelativeToolTip": "Projeto_Importacao\\ImportarClient.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T15:19:58.488Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Home.cs",
+              "DocumentMoniker": "C:\\Projeto-XML\\Projeto_Importacao\\Home.cs",
+              "RelativeDocumentMoniker": "Projeto_Importacao\\Home.cs",
+              "ToolTip": "C:\\Projeto-XML\\Projeto_Importacao\\Home.cs",
+              "RelativeToolTip": "Projeto_Importacao\\Home.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAowCcAAABRAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T14:53:02.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Home.cs [Design]",
+              "DocumentMoniker": "C:\\Projeto-XML\\Projeto_Importacao\\Home.cs",
+              "RelativeDocumentMoniker": "Projeto_Importacao\\Home.cs",
+              "ToolTip": "C:\\Projeto-XML\\Projeto_Importacao\\Home.cs [Design]",
+              "RelativeToolTip": "Projeto_Importacao\\Home.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T14:53:00.359Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
