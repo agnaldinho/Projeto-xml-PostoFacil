@@ -29,43 +29,29 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportarProduto));
-            this.btnApresentar = new System.Windows.Forms.Button();
             this.lvDados = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnImportar = new System.Windows.Forms.Button();
             this.cbEmpresa = new System.Windows.Forms.ComboBox();
             this.cbTipoXml = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtEncontrado = new System.Windows.Forms.Label();
+            this.txtProduto = new System.Windows.Forms.Label();
+            this.txtDiretorio = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnApresentar = new FontAwesome.Sharp.IconButton();
+            this.btnImportar = new FontAwesome.Sharp.IconButton();
             this.btnSelecionar = new System.Windows.Forms.PictureBox();
-            this.txtDiretorio = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnSelecionar)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnApresentar
-            // 
-            this.btnApresentar.BackColor = System.Drawing.Color.Indigo;
-            this.btnApresentar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnApresentar.FlatAppearance.BorderSize = 0;
-            this.btnApresentar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnApresentar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnApresentar.ForeColor = System.Drawing.Color.White;
-            this.btnApresentar.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnApresentar.Location = new System.Drawing.Point(290, 47);
-            this.btnApresentar.Name = "btnApresentar";
-            this.btnApresentar.Size = new System.Drawing.Size(107, 40);
-            this.btnApresentar.TabIndex = 14;
-            this.btnApresentar.Text = "Ler Dados";
-            this.btnApresentar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnApresentar.UseVisualStyleBackColor = false;
-            this.btnApresentar.Click += new System.EventHandler(this.btnApresentar_Click);
-            // 
             // lvDados
             // 
-            this.lvDados.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lvDados.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvDados.HideSelection = false;
             this.lvDados.Location = new System.Drawing.Point(11, 151);
             this.lvDados.Name = "lvDados";
@@ -83,23 +69,6 @@
             this.label1.Size = new System.Drawing.Size(359, 21);
             this.label1.TabIndex = 21;
             this.label1.Text = "DADOS DE PRODUTOS A SEREM IMPORTADOS";
-            // 
-            // btnImportar
-            // 
-            this.btnImportar.BackColor = System.Drawing.Color.Indigo;
-            this.btnImportar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnImportar.FlatAppearance.BorderSize = 0;
-            this.btnImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnImportar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnImportar.ForeColor = System.Drawing.Color.White;
-            this.btnImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnImportar.Location = new System.Drawing.Point(677, 78);
-            this.btnImportar.Name = "btnImportar";
-            this.btnImportar.Size = new System.Drawing.Size(169, 40);
-            this.btnImportar.TabIndex = 18;
-            this.btnImportar.Text = "    Importar Dados";
-            this.btnImportar.UseVisualStyleBackColor = false;
-            this.btnImportar.Click += new System.EventHandler(this.btnImportar_Click);
             // 
             // cbEmpresa
             // 
@@ -151,8 +120,14 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(10)))), ((int)(((byte)(60)))));
-            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.txtEncontrado);
+            this.panel1.Controls.Add(this.txtProduto);
             this.panel1.Controls.Add(this.txtDiretorio);
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.btnApresentar);
+            this.panel1.Controls.Add(this.btnImportar);
             this.panel1.Controls.Add(this.btnSelecionar);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.cbEmpresa);
@@ -160,12 +135,116 @@
             this.panel1.Controls.Add(this.lvDados);
             this.panel1.Controls.Add(this.cbTipoXml);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.btnImportar);
-            this.panel1.Controls.Add(this.btnApresentar);
             this.panel1.Location = new System.Drawing.Point(0, -7);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(865, 644);
             this.panel1.TabIndex = 26;
+            // 
+            // txtEncontrado
+            // 
+            this.txtEncontrado.AutoSize = true;
+            this.txtEncontrado.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEncontrado.ForeColor = System.Drawing.Color.White;
+            this.txtEncontrado.Location = new System.Drawing.Point(153, 97);
+            this.txtEncontrado.Name = "txtEncontrado";
+            this.txtEncontrado.Size = new System.Drawing.Size(0, 21);
+            this.txtEncontrado.TabIndex = 47;
+            // 
+            // txtProduto
+            // 
+            this.txtProduto.AutoSize = true;
+            this.txtProduto.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtProduto.ForeColor = System.Drawing.Color.White;
+            this.txtProduto.Location = new System.Drawing.Point(146, 118);
+            this.txtProduto.Name = "txtProduto";
+            this.txtProduto.Size = new System.Drawing.Size(0, 21);
+            this.txtProduto.TabIndex = 46;
+            // 
+            // txtDiretorio
+            // 
+            this.txtDiretorio.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDiretorio.ForeColor = System.Drawing.Color.White;
+            this.txtDiretorio.Location = new System.Drawing.Point(8, 47);
+            this.txtDiretorio.Name = "txtDiretorio";
+            this.txtDiretorio.Size = new System.Drawing.Size(221, 40);
+            this.txtDiretorio.TabIndex = 45;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(7, 118);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(148, 21);
+            this.label7.TabIndex = 44;
+            this.label7.Text = "Total de produtos:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(7, 97);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(145, 21);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "Total de arquivos:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(7, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(184, 21);
+            this.label6.TabIndex = 42;
+            this.label6.Text = "Diretório dos arquivos:";
+            // 
+            // btnApresentar
+            // 
+            this.btnApresentar.BackColor = System.Drawing.Color.Indigo;
+            this.btnApresentar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApresentar.FlatAppearance.BorderSize = 0;
+            this.btnApresentar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnApresentar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnApresentar.ForeColor = System.Drawing.Color.White;
+            this.btnApresentar.IconChar = FontAwesome.Sharp.IconChar.FileCirclePlus;
+            this.btnApresentar.IconColor = System.Drawing.Color.White;
+            this.btnApresentar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnApresentar.IconSize = 30;
+            this.btnApresentar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnApresentar.Location = new System.Drawing.Point(290, 47);
+            this.btnApresentar.Name = "btnApresentar";
+            this.btnApresentar.Size = new System.Drawing.Size(113, 40);
+            this.btnApresentar.TabIndex = 41;
+            this.btnApresentar.Text = "Ler Dados";
+            this.btnApresentar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnApresentar.UseVisualStyleBackColor = false;
+            this.btnApresentar.Click += new System.EventHandler(this.btnApresentar_Click_1);
+            // 
+            // btnImportar
+            // 
+            this.btnImportar.BackColor = System.Drawing.Color.Indigo;
+            this.btnImportar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnImportar.FlatAppearance.BorderSize = 0;
+            this.btnImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnImportar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnImportar.ForeColor = System.Drawing.Color.White;
+            this.btnImportar.IconChar = FontAwesome.Sharp.IconChar.FileImport;
+            this.btnImportar.IconColor = System.Drawing.Color.White;
+            this.btnImportar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnImportar.IconSize = 40;
+            this.btnImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnImportar.Location = new System.Drawing.Point(677, 78);
+            this.btnImportar.Name = "btnImportar";
+            this.btnImportar.Size = new System.Drawing.Size(169, 53);
+            this.btnImportar.TabIndex = 40;
+            this.btnImportar.Text = "Importar Dados";
+            this.btnImportar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnImportar.UseVisualStyleBackColor = false;
+            this.btnImportar.Click += new System.EventHandler(this.btnImportar_Click_1);
             // 
             // btnSelecionar
             // 
@@ -177,29 +256,6 @@
             this.btnSelecionar.TabIndex = 26;
             this.btnSelecionar.TabStop = false;
             this.btnSelecionar.Click += new System.EventHandler(this.btnSelecionar_Click_1);
-            // 
-            // txtDiretorio
-            // 
-            this.txtDiretorio.BackColor = System.Drawing.Color.Indigo;
-            this.txtDiretorio.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtDiretorio.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDiretorio.ForeColor = System.Drawing.SystemColors.Window;
-            this.txtDiretorio.Location = new System.Drawing.Point(11, 47);
-            this.txtDiretorio.Multiline = true;
-            this.txtDiretorio.Name = "txtDiretorio";
-            this.txtDiretorio.Size = new System.Drawing.Size(225, 39);
-            this.txtDiretorio.TabIndex = 27;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(33, 23);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(180, 21);
-            this.label4.TabIndex = 28;
-            this.label4.Text = "Diretório dos arquivos\r\n";
             // 
             // ImportarProduto
             // 
@@ -220,17 +276,21 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button btnApresentar;
         private System.Windows.Forms.ListView lvDados;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnImportar;
         private System.Windows.Forms.ComboBox cbEmpresa;
         private System.Windows.Forms.ComboBox cbTipoXml;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox btnSelecionar;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtDiretorio;
+        private FontAwesome.Sharp.IconButton btnApresentar;
+        private FontAwesome.Sharp.IconButton btnImportar;
+        private System.Windows.Forms.Label txtDiretorio;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label txtEncontrado;
+        private System.Windows.Forms.Label txtProduto;
     }
 }

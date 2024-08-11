@@ -77,37 +77,6 @@ namespace PortaFacil
             get { return connectionString; }
             set { connectionString = value; }
         }
-
-        public FbConnection AbrirConexao()
-        {
-            var connection = new FbConnection(connectionString);
-            try
-            {
-                connection.Open();
-            }
-            catch (FbException e)
-            {
-                MessageBox.Show("Erro ao configurar o banco de dados " + e.Message);
-            }
-
-            return connection;
-        }
-
-        public FbConnection AbrirConexaoBanco()
-        {
-            var connection = new FbConnection(connectionString);
-            try
-            {
-                connection.Open();
-                MessageBox.Show("Conexão com o banco de dados estabelecida com sucesso!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao configurar o banco de dados " + ex.Message);
-            }
-
-            return connection;
-        }
         private void btnSalvar_Click_1(object sender, EventArgs e)
         {
 
@@ -129,7 +98,24 @@ namespace PortaFacil
             LastDiretorio = txtDiretorio.Text;
 
             txtBanco.ReadOnly = true;
-            AbrirConexaoBanco();
+            try 
+            {
+                var connection = new FbConnection(connectionString);
+                try
+                {
+                    connection.Open();
+                    MessageBox.Show("Conexão com o banco de dados estabelecida com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao configurar o banco de dados " + ex.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Selecione um arquivo de banco de dados.");
+            }
+                
         }
 
         private void btnExcluir_Click_1(object sender, EventArgs e)

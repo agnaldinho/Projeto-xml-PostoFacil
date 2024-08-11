@@ -16,6 +16,7 @@ namespace PortaFacil
 {
     public partial class ImportarProduto : Form
     {
+        private int contadorProdutos = 0;
         private string pastaXml = string.Empty;
         private BancoDeDados banco;
         private int ultimoProdutoId = 0;
@@ -49,10 +50,7 @@ namespace PortaFacil
         private void personalizarbotao()
         {
             Color corRoxo = Color.FromArgb(0x28, 0x0A, 0x3C);
-            IconManager.SetButtonIcon(btnImportar, Properties.Resources.Importar, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
-            IconManager.SetPicturebox(btnSelecionar, Properties.Resources.xml, 58, 58, corRoxo, corRoxo);
-            IconManager.SetButtonIcon(btnApresentar, Properties.Resources.dados, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
-
+            IconManager.SetPicturebox(btnSelecionar, Properties.Resources.xml, 58, 58, corRoxo, corRoxo);    
         }
         private void CarregarComboBoxEmpresa()
         {
@@ -197,7 +195,9 @@ namespace PortaFacil
 
 
                         lvDados.Items.Add(newItem);
-                    }
+
+                        contadorProdutos++;
+    }
                 };
 
                 if (lvDados.InvokeRequired)
@@ -332,6 +332,8 @@ namespace PortaFacil
                         newItem.SubItems.Add(cest);
 
                         lvDados.Items.Add(newItem);
+
+                        contadorProdutos++;
                     }
                 };
                 if (lvDados.InvokeRequired)
@@ -458,6 +460,8 @@ namespace PortaFacil
                         newItem.SubItems.Add(cest);
 
                         lvDados.Items.Add(newItem);
+
+                        contadorProdutos++;
                     }
                 };
 
@@ -745,8 +749,7 @@ namespace PortaFacil
             return ultimoId;
         }
 
-
-        private void btnApresentar_Click(object sender, EventArgs e)
+        private void btnApresentar_Click_1(object sender, EventArgs e)
         {
             string tipoXml = cbTipoXml.SelectedItem?.ToString();
 
@@ -793,8 +796,6 @@ namespace PortaFacil
 
             btnImportar.Enabled = true;
         }
-
-
         private void ProcessarArquivosXml(carregamento telaCarregamento, string tipoXml)
         {
             try
@@ -833,6 +834,8 @@ namespace PortaFacil
 
                 telaCarregamento.Invoke(new Action(() =>
                 {
+                    txtEncontrado.Text = totalArquivos.ToString();
+                    txtProduto.Text = contadorProdutos.ToString();
                 }));
             }
             catch (Exception ex)
@@ -866,11 +869,13 @@ namespace PortaFacil
                 }
             }
         }
-
-        private void btnImportar_Click(object sender, EventArgs e)
+        private void btnImportar_Click_1(object sender, EventArgs e)
         {
             ImportarDados();
             lvDados.Items.Clear();
+            txtProduto.Text = "";
+            txtDiretorio.Text = "";
+            txtEncontrado.Text = "";
             btnImportar.Enabled = false;
         }
 

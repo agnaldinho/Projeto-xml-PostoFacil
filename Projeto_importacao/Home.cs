@@ -30,14 +30,9 @@ namespace PortaFacil
         }
         private void personalizarbotao() 
         {
-            Color corRoxo = Color.FromArgb(0x28, 0x0A, 0x3C);
-            IconManager.SetButtonIcon(btnCliente, Properties.Resources.Pessoa, 60, 60, ContentAlignment.MiddleLeft, Color.Indigo, Color.White);
-            IconManager.SetButtonIcon(btnBanco, Properties.Resources.BancoDeDados, 60, 60, ContentAlignment.MiddleLeft, Color.Indigo, Color.White);
-            IconManager.SetButtonIcon(btnProduto, Properties.Resources.Produto, 60, 60, ContentAlignment.MiddleLeft, Color.Indigo, Color.White);
-            IconManager.SetButtonIcon(btnSair, Properties.Resources.X, 28, 28, ContentAlignment.BottomCenter, Color.Indigo, Color.Indigo);
-            IconManager.SetButtonIcon(btnMinimizar, Properties.Resources.traco, 28, 28, ContentAlignment.BottomCenter, Color.Indigo, Color.Indigo);
-            IconManager.SetButtonIcon(btnSobre, Properties.Resources.info, 60, 60, ContentAlignment.MiddleLeft, Color.Indigo, Color.White);
+            Color corRoxo = Color.FromArgb(0x28, 0x0A, 0x3C);      
             IconManager.SetPicturebox(pbLogo, Properties.Resources.xmlLogo, 150, 150, corRoxo, corRoxo);
+            IconManager.SetPicturebox(pbLinx, Properties.Resources.Linx, 150, 150, Color.Indigo, Color.Indigo);
 
         }
         [DllImport("user32.dll")]
@@ -81,43 +76,43 @@ namespace PortaFacil
                 SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-        private void btnMinimizar_Click(object sender, EventArgs e)
+
+        private void btnMinimizar_Click_1(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void btnSair_Click(object sender, EventArgs e)
+        private void btnSair_Click_1(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
-        private void btnCliente_Click(object sender, EventArgs e)
+        private void btnCliente_Click_1(object sender, EventArgs e)
         {
             panel2.Controls.Clear();
             ImportarClient cliente = new ImportarClient();
             Hub(cliente);
-
         }
-
-        private void btnBanco_Click(object sender, EventArgs e)
+        private void btnBanco_Click_1(object sender, EventArgs e)
         {
             panel2.Controls.Clear();
             BancoDeDados banco = new BancoDeDados();
             Hub(banco);
         }
 
-        private void btnProduto_Click(object sender, EventArgs e)
+        private void btnProduto_Click_1(object sender, EventArgs e)
         {
             panel2.Controls.Clear();
             ImportarProduto produto = new ImportarProduto();
             Hub(produto);
         }
 
-        private void btnSobre_Click(object sender, EventArgs e)
+        private void btnSobre_Click_1(object sender, EventArgs e)
         {
             panel2.Controls.Clear();
             Sobre sobre = new Sobre();
             Hub(sobre);
         }
+
+
     }
 }

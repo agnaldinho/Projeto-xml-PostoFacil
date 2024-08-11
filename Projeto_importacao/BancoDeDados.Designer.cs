@@ -36,6 +36,9 @@
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.txtIp = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExcluir = new FontAwesome.Sharp.IconButton();
+            this.btnSalvar = new FontAwesome.Sharp.IconButton();
+            this.btnSelecionarArquivo = new FontAwesome.Sharp.IconButton();
             this.iconPictureBox6 = new FontAwesome.Sharp.IconPictureBox();
             this.iconPictureBox5 = new FontAwesome.Sharp.IconPictureBox();
             this.iconPictureBox4 = new FontAwesome.Sharp.IconPictureBox();
@@ -43,9 +46,7 @@
             this.txtDiretorio = new System.Windows.Forms.TextBox();
             this.iconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
             this.iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            this.btnSelecionarArquivo = new FontAwesome.Sharp.IconButton();
-            this.btnSalvar = new FontAwesome.Sharp.IconButton();
-            this.btnExcluir = new FontAwesome.Sharp.IconButton();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox5)).BeginInit();
@@ -53,6 +54,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -98,9 +100,9 @@
             this.txtSenha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtSenha.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSenha.ForeColor = System.Drawing.Color.White;
-            this.txtSenha.Location = new System.Drawing.Point(13, 435);
+            this.txtSenha.Location = new System.Drawing.Point(0, 7);
             this.txtSenha.Name = "txtSenha";
-            this.txtSenha.Size = new System.Drawing.Size(374, 28);
+            this.txtSenha.Size = new System.Drawing.Size(376, 28);
             this.txtSenha.TabIndex = 30;
             this.txtSenha.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -146,13 +148,77 @@
             this.panel1.Controls.Add(this.txtIp);
             this.panel1.Controls.Add(this.txtUsuario);
             this.panel1.Controls.Add(this.txtBanco);
-            this.panel1.Controls.Add(this.txtSenha);
             this.panel1.Controls.Add(this.txtPorta);
             this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(-1, -1);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(865, 641);
             this.panel1.TabIndex = 33;
+            // 
+            // btnExcluir
+            // 
+            this.btnExcluir.BackColor = System.Drawing.Color.Indigo;
+            this.btnExcluir.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExcluir.FlatAppearance.BorderSize = 0;
+            this.btnExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExcluir.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExcluir.ForeColor = System.Drawing.Color.White;
+            this.btnExcluir.IconChar = FontAwesome.Sharp.IconChar.Trash;
+            this.btnExcluir.IconColor = System.Drawing.Color.White;
+            this.btnExcluir.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnExcluir.IconSize = 40;
+            this.btnExcluir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExcluir.Location = new System.Drawing.Point(506, 552);
+            this.btnExcluir.Name = "btnExcluir";
+            this.btnExcluir.Size = new System.Drawing.Size(168, 60);
+            this.btnExcluir.TabIndex = 43;
+            this.btnExcluir.Text = "Limpar";
+            this.btnExcluir.UseVisualStyleBackColor = false;
+            this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click_1);
+            // 
+            // btnSalvar
+            // 
+            this.btnSalvar.BackColor = System.Drawing.Color.Indigo;
+            this.btnSalvar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSalvar.FlatAppearance.BorderSize = 0;
+            this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSalvar.ForeColor = System.Drawing.Color.White;
+            this.btnSalvar.IconChar = FontAwesome.Sharp.IconChar.FileArrowUp;
+            this.btnSalvar.IconColor = System.Drawing.Color.White;
+            this.btnSalvar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnSalvar.IconSize = 40;
+            this.btnSalvar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSalvar.Location = new System.Drawing.Point(158, 552);
+            this.btnSalvar.Name = "btnSalvar";
+            this.btnSalvar.Size = new System.Drawing.Size(168, 60);
+            this.btnSalvar.TabIndex = 42;
+            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.UseVisualStyleBackColor = false;
+            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click_1);
+            // 
+            // btnSelecionarArquivo
+            // 
+            this.btnSelecionarArquivo.BackColor = System.Drawing.Color.Indigo;
+            this.btnSelecionarArquivo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSelecionarArquivo.FlatAppearance.BorderSize = 0;
+            this.btnSelecionarArquivo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSelecionarArquivo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSelecionarArquivo.ForeColor = System.Drawing.Color.White;
+            this.btnSelecionarArquivo.IconChar = FontAwesome.Sharp.IconChar.Database;
+            this.btnSelecionarArquivo.IconColor = System.Drawing.Color.White;
+            this.btnSelecionarArquivo.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btnSelecionarArquivo.IconSize = 40;
+            this.btnSelecionarArquivo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSelecionarArquivo.Location = new System.Drawing.Point(332, 552);
+            this.btnSelecionarArquivo.Name = "btnSelecionarArquivo";
+            this.btnSelecionarArquivo.Size = new System.Drawing.Size(168, 60);
+            this.btnSelecionarArquivo.TabIndex = 40;
+            this.btnSelecionarArquivo.Text = "Adicionar banco \r\nde dados";
+            this.btnSelecionarArquivo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSelecionarArquivo.UseVisualStyleBackColor = false;
+            this.btnSelecionarArquivo.Click += new System.EventHandler(this.btnSelecionarArquivo_Click_1);
             // 
             // iconPictureBox6
             // 
@@ -173,10 +239,10 @@
             this.iconPictureBox5.IconChar = FontAwesome.Sharp.IconChar.Lock;
             this.iconPictureBox5.IconColor = System.Drawing.Color.White;
             this.iconPictureBox5.IconFont = FontAwesome.Sharp.IconFont.Solid;
-            this.iconPictureBox5.IconSize = 28;
+            this.iconPictureBox5.IconSize = 38;
             this.iconPictureBox5.Location = new System.Drawing.Point(11, 435);
             this.iconPictureBox5.Name = "iconPictureBox5";
-            this.iconPictureBox5.Size = new System.Drawing.Size(28, 28);
+            this.iconPictureBox5.Size = new System.Drawing.Size(40, 38);
             this.iconPictureBox5.TabIndex = 38;
             this.iconPictureBox5.TabStop = false;
             // 
@@ -245,66 +311,14 @@
             this.iconPictureBox1.TabIndex = 33;
             this.iconPictureBox1.TabStop = false;
             // 
-            // btnSelecionarArquivo
+            // panel2
             // 
-            this.btnSelecionarArquivo.BackColor = System.Drawing.Color.Indigo;
-            this.btnSelecionarArquivo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSelecionarArquivo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSelecionarArquivo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelecionarArquivo.ForeColor = System.Drawing.Color.White;
-            this.btnSelecionarArquivo.IconChar = FontAwesome.Sharp.IconChar.Database;
-            this.btnSelecionarArquivo.IconColor = System.Drawing.Color.White;
-            this.btnSelecionarArquivo.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnSelecionarArquivo.IconSize = 40;
-            this.btnSelecionarArquivo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSelecionarArquivo.Location = new System.Drawing.Point(332, 552);
-            this.btnSelecionarArquivo.Name = "btnSelecionarArquivo";
-            this.btnSelecionarArquivo.Size = new System.Drawing.Size(168, 60);
-            this.btnSelecionarArquivo.TabIndex = 40;
-            this.btnSelecionarArquivo.Text = "Adicionar banco \r\nde dados";
-            this.btnSelecionarArquivo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSelecionarArquivo.UseVisualStyleBackColor = false;
-            this.btnSelecionarArquivo.Click += new System.EventHandler(this.btnSelecionarArquivo_Click_1);
-            // 
-            // btnSalvar
-            // 
-            this.btnSalvar.BackColor = System.Drawing.Color.Indigo;
-            this.btnSalvar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalvar.ForeColor = System.Drawing.Color.White;
-            this.btnSalvar.IconChar = FontAwesome.Sharp.IconChar.FileArrowUp;
-            this.btnSalvar.IconColor = System.Drawing.Color.White;
-            this.btnSalvar.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnSalvar.IconSize = 40;
-            this.btnSalvar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSalvar.Location = new System.Drawing.Point(158, 552);
-            this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(168, 60);
-            this.btnSalvar.TabIndex = 42;
-            this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.UseVisualStyleBackColor = false;
-            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click_1);
-            // 
-            // btnExcluir
-            // 
-            this.btnExcluir.BackColor = System.Drawing.Color.Indigo;
-            this.btnExcluir.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnExcluir.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExcluir.ForeColor = System.Drawing.Color.White;
-            this.btnExcluir.IconChar = FontAwesome.Sharp.IconChar.Trash;
-            this.btnExcluir.IconColor = System.Drawing.Color.White;
-            this.btnExcluir.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.btnExcluir.IconSize = 40;
-            this.btnExcluir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExcluir.Location = new System.Drawing.Point(506, 552);
-            this.btnExcluir.Name = "btnExcluir";
-            this.btnExcluir.Size = new System.Drawing.Size(168, 60);
-            this.btnExcluir.TabIndex = 43;
-            this.btnExcluir.Text = "Limpar";
-            this.btnExcluir.UseVisualStyleBackColor = false;
-            this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click_1);
+            this.panel2.BackColor = System.Drawing.Color.Indigo;
+            this.panel2.Controls.Add(this.txtSenha);
+            this.panel2.Location = new System.Drawing.Point(11, 435);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(376, 38);
+            this.panel2.TabIndex = 44;
             // 
             // BancoDeDados
             // 
@@ -325,6 +339,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -347,5 +363,6 @@
         private FontAwesome.Sharp.IconButton btnSelecionarArquivo;
         private FontAwesome.Sharp.IconButton btnSalvar;
         private FontAwesome.Sharp.IconButton btnExcluir;
+        private System.Windows.Forms.Panel panel2;
     }
 }

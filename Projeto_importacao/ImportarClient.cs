@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 using System.Xml;
 using FirebirdSql.Data.FirebirdClient;
@@ -16,9 +20,11 @@ namespace PortaFacil
 {
     public partial class ImportarClient : Form
     {
+        private int contadorCNPJs = 0;
         private BancoDeDados banco;
         private HashSet<string> cnpjsAdicionados;
         private string pastaXml = string.Empty;
+        HashSet<string> cnpjsProcessados = new HashSet<string>();
 
         public ImportarClient()
         {
@@ -46,6 +52,7 @@ namespace PortaFacil
             lvDados.Columns.Add("Bairro", 200);
             lvDados.Columns.Add("Cidade", 200);
             lvDados.Columns.Add("Estado", 150);
+            lvDados.Columns.Add("CEP", 150);
 
 
         }
@@ -72,6 +79,7 @@ namespace PortaFacil
                         string bairro = null;
                         string cidade = null;
                         string estado = null;
+                        string cep = "00000000";
 
                         XmlNode infAdicNode = root.SelectSingleNode("//infAdic");
                         if (infAdicNode != null)
@@ -88,6 +96,8 @@ namespace PortaFacil
                                     bairro = enderecoMatch.Groups[3].Value.Trim();
                                     cidade = enderecoMatch.Groups[4].Value.Trim();
                                     estado = enderecoMatch.Groups[5].Value.Trim();
+                                    cep = enderecoMatch.Groups[6].Value.Trim();
+                                    cep = "00000000";
                                 }
                             }
                         }
@@ -103,7 +113,10 @@ namespace PortaFacil
                             item.SubItems.Add(bairro);
                             item.SubItems.Add(cidade);
                             item.SubItems.Add(estado);
+                            item.SubItems.Add(cep);
                             lvDados.Items.Add(item);
+
+                            contadorCNPJs++;
                         }
                     }
                 };
@@ -155,13 +168,14 @@ namespace PortaFacil
                         string bairro = enderecoNode?["xBairro"]?.InnerText ?? string.Empty;
                         string cidade = enderecoNode?["xMun"]?.InnerText ?? string.Empty;
                         string estado = enderecoNode?["UF"]?.InnerText ?? string.Empty;
+                        string cep = enderecoNode?["CEP"]?.InnerText ?? "00000000";
 
                         // Extrair IE do infCpl
                         string ie = ExtractIE(root.SelectSingleNode("//nfe:infCpl", nsmgr)?.InnerText);
 
                         if (!string.IsNullOrEmpty(cnpj) && !string.IsNullOrEmpty(nome) && !cnpjsAdicionados.Contains(cnpj))
                         {
-                            cnpjsAdicionados.Add(cnpj); // Adiciona o CNPJ ao conjunto
+                            cnpjsAdicionados.Add(cnpj);
                             ListViewItem item = new ListViewItem(cnpj);
                             item.SubItems.Add(nome);
                             item.SubItems.Add(ie);
@@ -170,7 +184,10 @@ namespace PortaFacil
                             item.SubItems.Add(bairro);
                             item.SubItems.Add(cidade);
                             item.SubItems.Add(estado);
+                            item.SubItems.Add(cep);
                             lvDados.Items.Add(item);
+
+                            contadorCNPJs++;
                         }
                     }
                 };
@@ -241,10 +258,11 @@ namespace PortaFacil
                         string bairro = enderecoNode?["xBairro"]?.InnerText ?? string.Empty;
                         string cidade = enderecoNode?["xMun"]?.InnerText ?? string.Empty;
                         string estado = enderecoNode?["UF"]?.InnerText ?? string.Empty;
+                        string cep = enderecoNode?["CEP"]?.InnerText ?? "00000000";
 
                         if (!string.IsNullOrEmpty(cnpj) && !string.IsNullOrEmpty(nome) && !cnpjsAdicionados.Contains(cnpj))
                         {
-                            cnpjsAdicionados.Add(cnpj); // Adiciona o CNPJ ao conjunto
+                            cnpjsAdicionados.Add(cnpj); 
                             ListViewItem item = new ListViewItem(cnpj);
                             item.SubItems.Add(nome);
                             item.SubItems.Add(ie);
@@ -253,25 +271,32 @@ namespace PortaFacil
                             item.SubItems.Add(bairro);
                             item.SubItems.Add(cidade);
                             item.SubItems.Add(estado);
+                            item.SubItems.Add(cep);
                             lvDados.Items.Add(item);
+
+                            contadorCNPJs++;
                         }
+
+
                     }
                 };
 
                 if (lvDados.InvokeRequired)
                 {
-                    lvDados.Invoke(processXmlNode);
+                    lvDados.Invoke(processXmlNode);              
                 }
                 else
                 {
                     processXmlNode();
                 }
+ 
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao ler o arquivo XML: " + ex.Message);
             }
         }
+
         private string TruncarTexto(string texto, int maxLength)
         {
             if (string.IsNullOrEmpty(texto))
@@ -283,6 +308,76 @@ namespace PortaFacil
 
             return texto.Length <= maxLength ? texto : texto.Substring(0, maxLength);
         }
+
+
+        public static string RemoverAcentos(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return text;
+
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public class CidadeResultado
+        {
+            public int CidadeId { get; set; }
+            public string NomeCidade { get; set; }
+        }
+
+        private CidadeResultado ObterOuInserirCidade(FbConnection conn, FbTransaction transaction, string nomeCidade)
+        {
+            int cidadeId = -1;
+            string nomeCidadeNormalizado = RemoverAcentos(nomeCidade).ToUpper();
+
+
+            string querySelect = @"SELECT CIDADE_ID, NOME
+                                   FROM CIDADE
+                                   WHERE UPPER(TRIM(NOME)) = @NOME 
+                                   OR UPPER(TRIM(
+                                   REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                                   REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                                   REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(NOME, 'Á', 'A'), 'À', 'A'), 'Â', 'A'), 'Ã', 'A'), 'Ä', 'A'), 'Å', 'A'), 'Æ', 'AE'), 'Ç', 'C'), 'È', 'E'), 'É', 'E'), 'Ê', 'E'), 'Ë', 'E'), 'Ì', 'I'), 'Í', 'I'), 'Î', 'I'), 'Ï', 'I'), 'Ñ', 'N'), 'Ò', 'O'), 'Ó', 'O'), 'Ô', 'O'), 'Õ', 'O'), 'Ö', 'O'), 'Ù', 'U'), 'Ú', 'U'), 'Û', 'U'), 'Ü', 'U'), 'Ý', 'Y'))) = @NOME;";
+
+            using (FbCommand command = new FbCommand(querySelect, conn, transaction))
+            {
+                command.Parameters.AddWithValue("@Nome", nomeCidadeNormalizado);
+
+                try
+                {
+                    using (FbDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            cidadeId = reader.GetInt32(0);
+                            string nomeCidadeBanco = reader.GetString(1);
+                            return new CidadeResultado { CidadeId = cidadeId, NomeCidade = nomeCidadeBanco };
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao consultar o banco de dados: " + ex.Message);
+                }
+            }
+
+            return new CidadeResultado { CidadeId = cidadeId, NomeCidade = nomeCidade };
+        }
+
+
+
+
         private void ImportarDados()
         {
             List<int> pessoaIds = new List<int>();
@@ -291,7 +386,7 @@ namespace PortaFacil
 
             using (FbConnection conn = new FbConnection(banco.ConnectionString))
             {
-                try 
+                try
                 {
                     conn.Open();
                     FbTransaction transaction = conn.BeginTransaction();
@@ -345,6 +440,9 @@ namespace PortaFacil
                                 cmd.Parameters.AddWithValue("@ie", ie);
                                 cmd.Parameters.AddWithValue("@empresa_id", empresaId);
                                 cmd.ExecuteNonQuery();
+
+                                // Adicionar o CNPJ ao conjunto de CNPJs processados
+                                cnpjsProcessados.Add(cnpj);
                             }
 
                             AtualizarGeradorId(conn, transaction);
@@ -369,69 +467,161 @@ namespace PortaFacil
                         return;
                     }
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Erro: Necessario Configurar Banco de Dados");
+                    MessageBox.Show("Erro: Necessário Configurar Banco de Dados");
+                    return;
                 }
-                
             }
 
-            using (FbConnection conn = new FbConnection(banco.ConnectionString))
-            {
-                try 
-                {
-                    conn.Open();
-                    FbTransaction transaction = conn.BeginTransaction();
-                    try
-                    {
-                        for (int i = 0; i < lvDados.Items.Count; i++)
-                        {
-                            ListViewItem item = lvDados.Items[i];
-                            string rua = item.SubItems[3].Text;
-                            string numero = item.SubItems[4].Text;
-                            string bairro = item.SubItems[5].Text;
-                            string cidade = item.SubItems[6].Text;
-                            string estado = item.SubItems[7].Text;
-
-                            string insertEndereco = "INSERT INTO endereco (pessoa_id, empresa_pessoa_id, ENDERECO, numero, bairro, cidade, uf,tipo_endereco,pais_id) VALUES (@pessoa_id, @empresa_id, @rua, @numero, @bairro, @cidade, @estado, 2,1058)";
-                            using (FbCommand cmd = new FbCommand(insertEndereco, conn, transaction))
-                            {
-                                cmd.Parameters.AddWithValue("@pessoa_id", pessoaIds[i]);
-                                cmd.Parameters.AddWithValue("@rua", rua);
-                                cmd.Parameters.AddWithValue("@numero", numero);
-                                cmd.Parameters.AddWithValue("@bairro", bairro);
-                                cmd.Parameters.AddWithValue("@cidade", cidade);
-                                cmd.Parameters.AddWithValue("@estado", estado);
-                                cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-
-                        transaction.Commit();
-                        MessageBox.Show("Importação concluída com sucesso.");
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                    }
-
-                }
-                catch (Exception ex) 
-                {
-                }
-                
-            }
-
-            // Apresentar lista de CNPJs duplicados
-            if (cnpjsDuplicados.Any())
+            if (cnpjsDuplicados.Any(s => !string.IsNullOrEmpty(s)))
             {
                 string cnpjsDuplicadosMsg = "CNPJs já cadastrados: " + string.Join(", ", cnpjsDuplicados);
                 MessageBox.Show(cnpjsDuplicadosMsg);
+
+                using (FbConnection conn = new FbConnection(banco.ConnectionString))
+                {
+                    try
+                    {
+                        conn.Open();
+                        FbTransaction transaction = conn.BeginTransaction();
+
+
+                        try
+                        {
+                            for (int i = 0; i < lvDados.Items.Count; i++)
+                            {
+                                ListViewItem item = lvDados.Items[i];
+                                string cnpj = item.SubItems[0].Text; 
+
+                                if (!cnpjsProcessados.Contains(cnpj))
+                                {
+                                    cnpjsDuplicados.Add(cnpj);
+                                    continue;
+                                }
+
+                                string rua = item.SubItems[3].Text;
+                                string numero = item.SubItems[4].Text;
+                                string bairro = item.SubItems[5].Text;
+                                string cidade = item.SubItems[6].Text;
+                                string estado = item.SubItems[7].Text;
+                                string cep = item.SubItems[8].Text;
+
+                                CidadeResultado cidadeResult = ObterOuInserirCidade(conn, transaction, cidade);
+
+                                string insertEndereco = "INSERT INTO endereco (pessoa_id, empresa_pessoa_id, ENDERECO, numero, bairro, cidade_id, cidade, uf, tipo_endereco, pais_id, cep) VALUES (@pessoa_id, @empresa_id, @rua, @numero, @bairro, @cidade_id, @cidade, @estado, 2, 1058, @cep)";
+                                using (FbCommand cmd = new FbCommand(insertEndereco, conn, transaction))
+                                {
+                                    cmd.Parameters.AddWithValue("@pessoa_id", pessoaIds[i]);
+                                    cmd.Parameters.AddWithValue("@rua", rua);
+                                    cmd.Parameters.AddWithValue("@numero", numero);
+                                    cmd.Parameters.AddWithValue("@bairro", bairro);
+                                    cmd.Parameters.AddWithValue("@cidade_id", cidadeResult.CidadeId);
+                                    cmd.Parameters.AddWithValue("@cidade", cidadeResult.NomeCidade);
+                                    cmd.Parameters.AddWithValue("@estado", estado);
+                                    cmd.Parameters.AddWithValue("@cep", cep);
+                                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                                    cmd.ExecuteNonQuery();
+                                }
+
+
+                            }
+
+                            transaction.Commit();
+                            MessageBox.Show("Importação concluída com sucesso.");
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro: Necessário Configurar Banco de Dados");
+                    }
+                }
+
+
+
             }
             else
             {
-                
+                using (FbConnection conn = new FbConnection(banco.ConnectionString))
+                {
+                    try
+                    {
+                        conn.Open();
+                        FbTransaction transaction = conn.BeginTransaction();
+                        try
+                        {
+                            for (int i = 0; i < lvDados.Items.Count; i++)
+                            {
+                                ListViewItem item = lvDados.Items[i];
+                                string rua = item.SubItems[3].Text;
+                                string numero = item.SubItems[4].Text;
+                                string bairro = item.SubItems[5].Text;
+                                string cidade = item.SubItems[6].Text;
+                                string estado = item.SubItems[7].Text;
+                                string cep = item.SubItems[8].Text;
+                                CidadeResultado cidadeResult = ObterOuInserirCidade(conn, transaction, cidade);
+
+                                string insertEndereco = "INSERT INTO endereco (pessoa_id, empresa_pessoa_id, ENDERECO, numero, bairro, cidade_id, cidade, uf, tipo_endereco, pais_id, cep) VALUES (@pessoa_id, @empresa_id, @rua, @numero, @bairro, @cidade_id, @cidade, @estado, 2, 1058, @cep)";
+                                using (FbCommand cmd = new FbCommand(insertEndereco, conn, transaction))
+                                {
+                                    cmd.Parameters.AddWithValue("@pessoa_id", pessoaIds[i]);
+                                    cmd.Parameters.AddWithValue("@rua", rua);
+                                    cmd.Parameters.AddWithValue("@numero", numero);
+                                    cmd.Parameters.AddWithValue("@bairro", bairro);
+                                    cmd.Parameters.AddWithValue("@cidade_id", cidadeResult.CidadeId);
+                                    cmd.Parameters.AddWithValue("@cidade", cidadeResult.NomeCidade);
+                                    cmd.Parameters.AddWithValue("@estado", estado);
+                                    cmd.Parameters.AddWithValue("@cep", cep);
+                                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            transaction.Commit();
+                            MessageBox.Show("Importação concluída com sucesso.");
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            MessageBox.Show("Erro ao inserir registros na tabela endereco: " + ex.Message);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro: Necessário Configurar Banco de Dados");
+                    }
+                }
             }
+        }
+        private void ImportarDadosParametrosPessoa() 
+        {
+
+            using (FbConnection conn = new FbConnection(banco.ConnectionString))
+            {
+                conn.Open();
+                FbTransaction transaction = conn.BeginTransaction();
+
+                string insertParametroPessoa109 = "insert into PRM_ATR_LOGICO_PESSOA (EMPRESA_PESSOA_ID, PESSOA_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_PESSOA_ID, PR.PESSOA_ID, '109', '40' from PESSOA PR where not exists(select 0 from PRM_ATR_LOGICO_PESSOA PALP where PALP.PESSOA_ID = PR.PESSOA_ID and PALP.PRM_ATR_LOGICO_ID = 109) and PR.EMPRESA_PESSOA_ID = @empresa_id and PR.PESSOA_ID in (select P.PESSOA_ID from PESSOA P where P.CLASSE = 1);";
+                using (FbCommand cmd = new FbCommand(insertParametroPessoa109, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+                    
+                }
+
+                string insertParametroPessoa111 = "insert into PRM_ATR_LOGICO_PESSOA (EMPRESA_PESSOA_ID, PESSOA_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_PESSOA_ID, PR.PESSOA_ID, '111', '40' from PESSOA PR where not exists(select 0 from PRM_ATR_LOGICO_PESSOA PALP where PALP.PESSOA_ID = PR.PESSOA_ID and PALP.PRM_ATR_LOGICO_ID = 111) and PR.EMPRESA_PESSOA_ID = @empresa_id and PR.PESSOA_ID in (select P.PESSOA_ID from PESSOA P where P.CLASSE = 1);";
+                using (FbCommand cmd = new FbCommand(insertParametroPessoa111, conn,transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+
+            }                
         }
 
 
@@ -516,7 +706,7 @@ namespace PortaFacil
             }
         }
 
-        private void btnApresentar_Click_1(object sender, EventArgs e)
+        private void btnApresentar_Click(object sender, EventArgs e)
         {
             string tipoXml = cbTipoXml.SelectedItem?.ToString();
 
@@ -550,6 +740,7 @@ namespace PortaFacil
 
             if (Directory.Exists(pastaXml))
             {
+
                 Task.Run(() =>
                 {
                     ProcessarArquivosXml(telaCarregamento, tipoXml);
@@ -564,10 +755,14 @@ namespace PortaFacil
             btnImportar.Enabled = true;
         }
 
-        private void btnImportar_Click_1(object sender, EventArgs e)
+        private void btnImportar_Click(object sender, EventArgs e)
         {
             ImportarDados();
+            ImportarDadosParametrosPessoa();
             lvDados.Items.Clear();
+            txtCliente.Text = "";
+            txtDiretorio.Text = "";
+            txtEncontrado.Text = "";
             btnImportar.Enabled = false;
         }
 
@@ -575,10 +770,7 @@ namespace PortaFacil
         {
 
             Color corRoxo = Color.FromArgb(0x28, 0x0A, 0x3C);
-            IconManager.SetButtonIcon(btnImportar, Properties.Resources.Importar, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
-            //IconManager.SetButtonIcon(btnSelecionar, Properties.Resources.xml, 300, 50, ContentAlignment.TopCenter, corRoxo, corRoxo);
             IconManager.SetPicturebox(btnSelecionar, Properties.Resources.xml, 58, 58, corRoxo, corRoxo);
-            IconManager.SetButtonIcon(btnApresentar, Properties.Resources.dados, 32, 32, ContentAlignment.BottomLeft, Color.Indigo, Color.White);
 
         }
 
@@ -620,7 +812,10 @@ namespace PortaFacil
 
                 telaCarregamento.Invoke(new Action(() =>
                 {
+                    txtEncontrado.Text = totalArquivos.ToString();
+                    txtCliente.Text = contadorCNPJs.ToString();
                 }));
+
             }
             catch (Exception ex)
             {
@@ -632,6 +827,7 @@ namespace PortaFacil
             finally
             {
                 telaCarregamento.Invoke(new Action(telaCarregamento.Close));
+
             }
         }
 
