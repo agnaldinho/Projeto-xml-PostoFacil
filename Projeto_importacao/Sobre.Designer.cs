@@ -41,16 +41,20 @@
             this.pbLinkedin2 = new System.Windows.Forms.PictureBox();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.pbSamuel = new System.Windows.Forms.PictureBox();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pbGit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLinkedin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLinkedin2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSamuel)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(11, 32);
+            this.label1.Location = new System.Drawing.Point(14, 9);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(657, 44);
@@ -61,7 +65,7 @@
             // 
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(13, 76);
+            this.label2.Location = new System.Drawing.Point(16, 53);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(831, 141);
@@ -72,7 +76,7 @@
             // 
             this.label4.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(14, 238);
+            this.label4.Location = new System.Drawing.Point(17, 194);
             this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(104, 39);
@@ -83,7 +87,7 @@
             // 
             this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(17, 433);
+            this.label5.Location = new System.Drawing.Point(20, 355);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(827, 97);
@@ -96,7 +100,7 @@
             // 
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(17, 289);
+            this.label3.Location = new System.Drawing.Point(20, 233);
             this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(833, 53);
@@ -112,7 +116,7 @@
             this.linkLabel1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.ForeColor = System.Drawing.Color.White;
             this.linkLabel1.LinkColor = System.Drawing.Color.White;
-            this.linkLabel1.Location = new System.Drawing.Point(57, 530);
+            this.linkLabel1.Location = new System.Drawing.Point(60, 455);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(98, 30);
             this.linkLabel1.TabIndex = 9;
@@ -126,7 +130,7 @@
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel2.LinkColor = System.Drawing.Color.White;
-            this.linkLabel2.Location = new System.Drawing.Point(57, 566);
+            this.linkLabel2.Location = new System.Drawing.Point(60, 491);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(84, 30);
             this.linkLabel2.TabIndex = 10;
@@ -136,7 +140,7 @@
             // 
             // pbGit
             // 
-            this.pbGit.Location = new System.Drawing.Point(21, 566);
+            this.pbGit.Location = new System.Drawing.Point(24, 491);
             this.pbGit.Name = "pbGit";
             this.pbGit.Size = new System.Drawing.Size(30, 30);
             this.pbGit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -145,7 +149,7 @@
             // 
             // pbLinkedin
             // 
-            this.pbLinkedin.Location = new System.Drawing.Point(21, 530);
+            this.pbLinkedin.Location = new System.Drawing.Point(24, 455);
             this.pbLinkedin.Name = "pbLinkedin";
             this.pbLinkedin.Size = new System.Drawing.Size(30, 30);
             this.pbLinkedin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -154,7 +158,7 @@
             // 
             // pbLinkedin2
             // 
-            this.pbLinkedin2.Location = new System.Drawing.Point(21, 388);
+            this.pbLinkedin2.Location = new System.Drawing.Point(24, 309);
             this.pbLinkedin2.Name = "pbLinkedin2";
             this.pbLinkedin2.Size = new System.Drawing.Size(30, 30);
             this.pbLinkedin2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -168,7 +172,7 @@
             this.linkLabel4.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel4.ForeColor = System.Drawing.Color.White;
             this.linkLabel4.LinkColor = System.Drawing.Color.White;
-            this.linkLabel4.Location = new System.Drawing.Point(56, 388);
+            this.linkLabel4.Location = new System.Drawing.Point(60, 309);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(98, 30);
             this.linkLabel4.TabIndex = 13;
@@ -180,12 +184,49 @@
             // 
             this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(17, 356);
+            this.label6.Location = new System.Drawing.Point(20, 286);
             this.label6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(194, 20);
             this.label6.TabIndex = 16;
             this.label6.Text = "- Danilo Muniz Ribeiro.";
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(17, 534);
+            this.label7.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(827, 91);
+            this.label7.TabIndex = 17;
+            this.label7.Text = "Tester: Responsável por adotar as melhores práticas e metodologias, garantindo a " +
+    "qualidade, confiabilidade e desempenho do projeto:\r\n\r\n- Samuel Marcio Raimundo P" +
+    "ereira\r\n\r\n";
+            // 
+            // pbSamuel
+            // 
+            this.pbSamuel.Location = new System.Drawing.Point(24, 628);
+            this.pbSamuel.Name = "pbSamuel";
+            this.pbSamuel.Size = new System.Drawing.Size(30, 30);
+            this.pbSamuel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbSamuel.TabIndex = 19;
+            this.pbSamuel.TabStop = false;
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.ActiveLinkColor = System.Drawing.Color.Indigo;
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel3.ForeColor = System.Drawing.Color.White;
+            this.linkLabel3.LinkColor = System.Drawing.Color.White;
+            this.linkLabel3.Location = new System.Drawing.Point(60, 628);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(98, 30);
+            this.linkLabel3.TabIndex = 18;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "Linkedin";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
             // Sobre
             // 
@@ -193,6 +234,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(10)))), ((int)(((byte)(60)))));
             this.ClientSize = new System.Drawing.Size(858, 680);
+            this.Controls.Add(this.pbSamuel);
+            this.Controls.Add(this.linkLabel3);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.pbLinkedin2);
             this.Controls.Add(this.linkLabel4);
@@ -207,12 +251,13 @@
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Sobre";
             this.Text = "Sobre";
             ((System.ComponentModel.ISupportInitialize)(this.pbGit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLinkedin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLinkedin2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSamuel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -232,5 +277,8 @@
         private System.Windows.Forms.PictureBox pbLinkedin2;
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox pbSamuel;
+        private System.Windows.Forms.LinkLabel linkLabel3;
     }
 }

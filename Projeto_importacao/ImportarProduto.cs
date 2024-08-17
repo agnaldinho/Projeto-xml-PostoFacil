@@ -796,6 +796,69 @@ namespace PortaFacil
 
             btnImportar.Enabled = true;
         }
+
+        private void ImportarParametroProduto() 
+        {
+            using (FbConnection conn = new FbConnection(banco.ConnectionString))
+            {
+                conn.Open();
+                FbTransaction transaction = conn.BeginTransaction();
+
+                string insertParametroProduto58 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '58', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 58) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
+                using (FbCommand cmd = new FbCommand(insertParametroProduto58, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+
+                }
+
+                string insertParametroProduto60 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '60', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 60) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
+                using (FbCommand cmd = new FbCommand(insertParametroProduto60, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+
+                }
+
+                string insertParametroProduto65 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '65', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 65) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
+                using (FbCommand cmd = new FbCommand(insertParametroProduto65, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+
+                }
+
+                string insertParametroCstSubstituicaoTributaria = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 32 WHERE pp.ct = 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
+                using (FbCommand cmd = new FbCommand(insertParametroCstSubstituicaoTributaria, conn, transaction))
+                {
+                    cmd.ExecuteNonQuery();
+
+                }
+
+                string insertParametroCst = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 33 WHERE pp.ct != 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
+                using (FbCommand cmd = new FbCommand(insertParametroCst, conn, transaction))
+                {
+                    cmd.ExecuteNonQuery();
+
+                }
+
+                string insertParametroDataTurno = "UPDATE produto_empresa pe SET pe.cfwin_data_vigencia = CURRENT_DATE, pe.cfwin_turno_id_vigencia = 1 where pe.empresa_id = @empresa_id and pe.cfwin_data_vigencia is null and pe.cfwin_turno_id_vigencia is null";
+                using (FbCommand cmd = new FbCommand(insertParametroDataTurno, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+                }
+
+                string insertParametroPrecoCusto = "update PRODUTO_EMPRESA PE set PE.PRC_CUSTO = PE.PRC_VEN_VISTA * 0.70 where PE.empresa_id = @empresa_id and PE.PRC_CUSTO = 0 and PE.PRODUTO_ID in (select PP.PRODUTO_ID from PRODUTO PP left join PRODUTO_NIVEL2 P2 on PP.PRODUTO_NIVEL2_ID = P2.PRODUTO_NIVEL2_ID where P2.DESCRICAO = 'Produtos Importados')";
+                using (FbCommand cmd = new FbCommand(insertParametroPrecoCusto, conn, transaction))
+                {
+                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                    cmd.ExecuteNonQuery();
+                }
+                transaction.Commit();
+
+            }
+        }
         private void ProcessarArquivosXml(carregamento telaCarregamento, string tipoXml)
         {
             try
@@ -862,8 +925,7 @@ namespace PortaFacil
                     pastaXml = folderBrowserDialog.SelectedPath;
                     MessageBox.Show("Pasta selecionada: " + pastaXml);
                     txtDiretorio.Text = pastaXml;
-
-                    // Obter todos os arquivos XML nas subpastas
+                    
                     string[] arquivosXml = Directory.GetFiles(pastaXml, "*.xml", SearchOption.AllDirectories);
 
                 }
@@ -877,6 +939,7 @@ namespace PortaFacil
             txtDiretorio.Text = "";
             txtEncontrado.Text = "";
             btnImportar.Enabled = false;
+            ImportarParametroProduto();
         }
 
 

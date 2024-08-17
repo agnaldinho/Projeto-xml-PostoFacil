@@ -24,7 +24,6 @@ namespace PortaFacil
         private BancoDeDados banco;
         private HashSet<string> cnpjsAdicionados;
         private string pastaXml = string.Empty;
-        HashSet<string> cnpjsProcessados = new HashSet<string>();
 
         public ImportarClient()
         {
@@ -441,8 +440,6 @@ namespace PortaFacil
                                 cmd.Parameters.AddWithValue("@empresa_id", empresaId);
                                 cmd.ExecuteNonQuery();
 
-                                // Adicionar o CNPJ ao conjunto de CNPJs processados
-                                cnpjsProcessados.Add(cnpj);
                             }
 
                             AtualizarGeradorId(conn, transaction);
@@ -450,7 +447,6 @@ namespace PortaFacil
                             int pessoaId = ObterPessoaIdPorCodigo(conn, transaction, novoCodigoPessoa);
                             pessoaIds.Add(pessoaId);
 
-                            // Adicionar CNPJ à lista de existentes para a empresa
                             if (!cnpjsPorEmpresa.ContainsKey(empresaId))
                             {
                                 cnpjsPorEmpresa[empresaId] = new HashSet<string>();
@@ -489,16 +485,19 @@ namespace PortaFacil
 
                         try
                         {
-                            for (int i = 0; i < lvDados.Items.Count; i++)
-                            {
-                                ListViewItem item = lvDados.Items[i];
-                                string cnpj = item.SubItems[0].Text; 
+                            int i = 0; 
 
-                                if (!cnpjsProcessados.Contains(cnpj))
+                            foreach (ListViewItem item in lvDados.Items)
+                            {
+                                int empresaId = Convert.ToInt32(cbEmpresa.SelectedValue);
+                                string cnpj = item.SubItems[0].Text;
+
+                                if (cnpjsDuplicados.Contains(cnpj))
                                 {
-                                    cnpjsDuplicados.Add(cnpj);
                                     continue;
                                 }
+
+                                cnpjsPorEmpresa[empresaId].Add(cnpj);
 
                                 string rua = item.SubItems[3].Text;
                                 string numero = item.SubItems[4].Text;
@@ -507,12 +506,14 @@ namespace PortaFacil
                                 string estado = item.SubItems[7].Text;
                                 string cep = item.SubItems[8].Text;
 
+                                int pessoaId = pessoaIds[i];
+
                                 CidadeResultado cidadeResult = ObterOuInserirCidade(conn, transaction, cidade);
 
                                 string insertEndereco = "INSERT INTO endereco (pessoa_id, empresa_pessoa_id, ENDERECO, numero, bairro, cidade_id, cidade, uf, tipo_endereco, pais_id, cep) VALUES (@pessoa_id, @empresa_id, @rua, @numero, @bairro, @cidade_id, @cidade, @estado, 2, 1058, @cep)";
                                 using (FbCommand cmd = new FbCommand(insertEndereco, conn, transaction))
                                 {
-                                    cmd.Parameters.AddWithValue("@pessoa_id", pessoaIds[i]);
+                                    cmd.Parameters.AddWithValue("@pessoa_id", pessoaId);
                                     cmd.Parameters.AddWithValue("@rua", rua);
                                     cmd.Parameters.AddWithValue("@numero", numero);
                                     cmd.Parameters.AddWithValue("@bairro", bairro);
@@ -520,11 +521,11 @@ namespace PortaFacil
                                     cmd.Parameters.AddWithValue("@cidade", cidadeResult.NomeCidade);
                                     cmd.Parameters.AddWithValue("@estado", estado);
                                     cmd.Parameters.AddWithValue("@cep", cep);
-                                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                                    cmd.Parameters.AddWithValue("@empresa_id", empresaId);
                                     cmd.ExecuteNonQuery();
                                 }
 
-
+                                i++; 
                             }
 
                             transaction.Commit();
@@ -532,7 +533,10 @@ namespace PortaFacil
                         }
                         catch (Exception ex)
                         {
+                            MessageBox.Show("Erro: " + ex.Message);
+                            transaction.Rollback();
                         }
+
                     }
                     catch (Exception ex)
                     {

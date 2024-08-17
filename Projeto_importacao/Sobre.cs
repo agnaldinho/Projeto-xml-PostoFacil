@@ -19,7 +19,9 @@ namespace PortaFacil
             Color corRoxo = Color.FromArgb(0x28, 0x0A, 0x3C);
             IconManager.SetPicturebox(pbLinkedin, Properties.Resources.linkedin, 50, 50, corRoxo,corRoxo);
             IconManager.SetPicturebox(pbLinkedin2, Properties.Resources.linkedin, 50, 50, corRoxo, corRoxo);
+            IconManager.SetPicturebox(pbSamuel, Properties.Resources.linkedin, 50, 50, corRoxo, corRoxo);
             IconManager.SetPicturebox(pbGit, Properties.Resources.git, 50, 50, corRoxo, corRoxo);
+
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -42,6 +44,13 @@ namespace PortaFacil
 
             System.Diagnostics.Process.Start(url);
 
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string url = "https://www.linkedin.com/in/samuelmrp/";
+
+            System.Diagnostics.Process.Start(url);
         }
     }
 }
