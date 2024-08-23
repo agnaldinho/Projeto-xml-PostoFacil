@@ -602,30 +602,36 @@ namespace PortaFacil
         }
         private void ImportarDadosParametrosPessoa() 
         {
-
-            using (FbConnection conn = new FbConnection(banco.ConnectionString))
+            try 
             {
-                conn.Open();
-                FbTransaction transaction = conn.BeginTransaction();
-
-                string insertParametroPessoa109 = "insert into PRM_ATR_LOGICO_PESSOA (EMPRESA_PESSOA_ID, PESSOA_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_PESSOA_ID, PR.PESSOA_ID, '109', '40' from PESSOA PR where not exists(select 0 from PRM_ATR_LOGICO_PESSOA PALP where PALP.PESSOA_ID = PR.PESSOA_ID and PALP.PRM_ATR_LOGICO_ID = 109) and PR.EMPRESA_PESSOA_ID = @empresa_id and PR.PESSOA_ID in (select P.PESSOA_ID from PESSOA P where P.CLASSE = 1);";
-                using (FbCommand cmd = new FbCommand(insertParametroPessoa109, conn, transaction))
+                using (FbConnection conn = new FbConnection(banco.ConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
-                    
+                    conn.Open();
+                    FbTransaction transaction = conn.BeginTransaction();
+
+                    string insertParametroPessoa109 = "insert into PRM_ATR_LOGICO_PESSOA (EMPRESA_PESSOA_ID, PESSOA_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_PESSOA_ID, PR.PESSOA_ID, '109', '40' from PESSOA PR where not exists(select 0 from PRM_ATR_LOGICO_PESSOA PALP where PALP.PESSOA_ID = PR.PESSOA_ID and PALP.PRM_ATR_LOGICO_ID = 109) and PR.EMPRESA_PESSOA_ID = @empresa_id and PR.PESSOA_ID in (select P.PESSOA_ID from PESSOA P where P.CLASSE = 1);";
+                    using (FbCommand cmd = new FbCommand(insertParametroPessoa109, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    string insertParametroPessoa111 = "insert into PRM_ATR_LOGICO_PESSOA (EMPRESA_PESSOA_ID, PESSOA_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_PESSOA_ID, PR.PESSOA_ID, '111', '40' from PESSOA PR where not exists(select 0 from PRM_ATR_LOGICO_PESSOA PALP where PALP.PESSOA_ID = PR.PESSOA_ID and PALP.PRM_ATR_LOGICO_ID = 111) and PR.EMPRESA_PESSOA_ID = @empresa_id and PR.PESSOA_ID in (select P.PESSOA_ID from PESSOA P where P.CLASSE = 1);";
+                    using (FbCommand cmd = new FbCommand(insertParametroPessoa111, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+
                 }
-
-                string insertParametroPessoa111 = "insert into PRM_ATR_LOGICO_PESSOA (EMPRESA_PESSOA_ID, PESSOA_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_PESSOA_ID, PR.PESSOA_ID, '111', '40' from PESSOA PR where not exists(select 0 from PRM_ATR_LOGICO_PESSOA PALP where PALP.PESSOA_ID = PR.PESSOA_ID and PALP.PRM_ATR_LOGICO_ID = 111) and PR.EMPRESA_PESSOA_ID = @empresa_id and PR.PESSOA_ID in (select P.PESSOA_ID from PESSOA P where P.CLASSE = 1);";
-                using (FbCommand cmd = new FbCommand(insertParametroPessoa111, conn,transaction))
-                {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
-                }
-
-                transaction.Commit();
-
-            }                
+            }
+            catch (Exception) 
+            {
+            }
+                       
         }
 
 
@@ -703,7 +709,6 @@ namespace PortaFacil
                     MessageBox.Show("Pasta selecionada: " + pastaXml);
                     txtDiretorio.Text = pastaXml;
 
-                    // Obter todos os arquivos XML nas subpastas
                     string[] arquivosXml = Directory.GetFiles(pastaXml, "*.xml", SearchOption.AllDirectories);
 
                 }

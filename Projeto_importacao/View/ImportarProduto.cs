@@ -512,6 +512,15 @@ namespace PortaFacil
                 case "CX":
                 case "Cx":
                 case "cx":
+                case "PC":
+                case "pc":
+                case "Pc":
+                case "SC":
+                case "sc":
+                case "Sc":
+                case "CXA":
+                case "Cxa":
+                case "cxa":
                     return 1;
                 case "DUZ":
                     return 2;
@@ -522,6 +531,8 @@ namespace PortaFacil
                 case "LT":
                 case "Lt":
                 case "lt":
+                case "L":
+                case "l":
                     return 4;
                 case "M3":
                 case "m3":
@@ -533,9 +544,12 @@ namespace PortaFacil
                 case "UN":
                 case "Un":
                 case "un":
+                case "EV":
+                case "Ev":
+                case "ev":
                     return 7;
                 default:
-                    throw new ArgumentException($"Código não reconhecido.");
+                    return 7;
             }
         }
         private int MapearCodigoCst(string cst)
@@ -557,7 +571,7 @@ namespace PortaFacil
                     return 6;
                 case "49 - OUTRAS OPERAÇÕES DE SAÍDA":
                     return 7;
-                case "99 - OUTRAS OPERAÇÕESO":
+                case "99 - OUTRAS OPERAÇÕES":
                     return 8;
                 case "02 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA DIFERENCIADA":
                     return 9;
@@ -669,7 +683,6 @@ namespace PortaFacil
                                     int count = Convert.ToInt32(cmd.ExecuteScalar());
                                     if (count > 0)
                                     {
-                                        // Produto já existe, pular para o próximo item
                                         continue;
                                     }
                                 }
@@ -799,65 +812,72 @@ namespace PortaFacil
 
         private void ImportarParametroProduto() 
         {
-            using (FbConnection conn = new FbConnection(banco.ConnectionString))
+            try 
             {
-                conn.Open();
-                FbTransaction transaction = conn.BeginTransaction();
-
-                string insertParametroProduto58 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '58', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 58) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
-                using (FbCommand cmd = new FbCommand(insertParametroProduto58, conn, transaction))
+                using (FbConnection conn = new FbConnection(banco.ConnectionString))
                 {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
+                    conn.Open();
+                    FbTransaction transaction = conn.BeginTransaction();
+
+                    string insertParametroProduto58 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '58', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 58) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
+                    using (FbCommand cmd = new FbCommand(insertParametroProduto58, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    string insertParametroProduto60 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '60', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 60) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
+                    using (FbCommand cmd = new FbCommand(insertParametroProduto60, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    string insertParametroProduto65 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '65', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 65) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
+                    using (FbCommand cmd = new FbCommand(insertParametroProduto65, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    string insertParametroCstSubstituicaoTributaria = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 32 WHERE pp.ct = 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
+                    using (FbCommand cmd = new FbCommand(insertParametroCstSubstituicaoTributaria, conn, transaction))
+                    {
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    string insertParametroCst = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 33 WHERE pp.ct != 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
+                    using (FbCommand cmd = new FbCommand(insertParametroCst, conn, transaction))
+                    {
+                        cmd.ExecuteNonQuery();
+
+                    }
+
+                    string insertParametroDataTurno = "UPDATE produto_empresa pe SET pe.cfwin_data_vigencia = CURRENT_DATE, pe.cfwin_turno_id_vigencia = 1 where pe.empresa_id = @empresa_id and pe.cfwin_data_vigencia is null and pe.cfwin_turno_id_vigencia is null";
+                    using (FbCommand cmd = new FbCommand(insertParametroDataTurno, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    string insertParametroPrecoCusto = "update PRODUTO_EMPRESA PE set PE.PRC_CUSTO = PE.PRC_VEN_VISTA * 0.70 where PE.empresa_id = @empresa_id and PE.PRC_CUSTO = 0 and PE.PRODUTO_ID in (select PP.PRODUTO_ID from PRODUTO PP left join PRODUTO_NIVEL2 P2 on PP.PRODUTO_NIVEL2_ID = P2.PRODUTO_NIVEL2_ID where P2.DESCRICAO = 'Produtos Importados')";
+                    using (FbCommand cmd = new FbCommand(insertParametroPrecoCusto, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
+                        cmd.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
 
                 }
-
-                string insertParametroProduto60 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '60', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 60) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
-                using (FbCommand cmd = new FbCommand(insertParametroProduto60, conn, transaction))
-                {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
-
-                }
-
-                string insertParametroProduto65 = "insert into PRM_ATR_LOGICO_PRODUTO (EMPRESA_ID, PRODUTO_ID, PRM_ATR_LOGICO_ID, VALOR) select PR.EMPRESA_ID, PR.PRODUTO_ID, '65', 'S' from produto_empresa PR where not exists(select 0 from PRM_ATR_LOGICO_PRODUTO PALP where PALP.PRODUTO_ID = PR.PRODUTO_ID and PALP.PRM_ATR_LOGICO_ID = 65) and PR.EMPRESA_ID = @EMPRESA_ID and PR.PRODUTO_ID in (select P.PRODUTO_ID from produto P);";
-                using (FbCommand cmd = new FbCommand(insertParametroProduto65, conn, transaction))
-                {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
-
-                }
-
-                string insertParametroCstSubstituicaoTributaria = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 32 WHERE pp.ct = 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
-                using (FbCommand cmd = new FbCommand(insertParametroCstSubstituicaoTributaria, conn, transaction))
-                {
-                    cmd.ExecuteNonQuery();
-
-                }
-
-                string insertParametroCst = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 33 WHERE pp.ct != 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
-                using (FbCommand cmd = new FbCommand(insertParametroCst, conn, transaction))
-                {
-                    cmd.ExecuteNonQuery();
-
-                }
-
-                string insertParametroDataTurno = "UPDATE produto_empresa pe SET pe.cfwin_data_vigencia = CURRENT_DATE, pe.cfwin_turno_id_vigencia = 1 where pe.empresa_id = @empresa_id and pe.cfwin_data_vigencia is null and pe.cfwin_turno_id_vigencia is null";
-                using (FbCommand cmd = new FbCommand(insertParametroDataTurno, conn, transaction))
-                {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
-                }
-
-                string insertParametroPrecoCusto = "update PRODUTO_EMPRESA PE set PE.PRC_CUSTO = PE.PRC_VEN_VISTA * 0.70 where PE.empresa_id = @empresa_id and PE.PRC_CUSTO = 0 and PE.PRODUTO_ID in (select PP.PRODUTO_ID from PRODUTO PP left join PRODUTO_NIVEL2 P2 on PP.PRODUTO_NIVEL2_ID = P2.PRODUTO_NIVEL2_ID where P2.DESCRICAO = 'Produtos Importados')";
-                using (FbCommand cmd = new FbCommand(insertParametroPrecoCusto, conn, transaction))
-                {
-                    cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);
-                    cmd.ExecuteNonQuery();
-                }
-                transaction.Commit();
-
             }
+            catch(Exception) 
+            {
+            }
+            
         }
         private void ProcessarArquivosXml(carregamento telaCarregamento, string tipoXml)
         {

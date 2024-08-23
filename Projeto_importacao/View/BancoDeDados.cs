@@ -9,6 +9,8 @@ namespace PortaFacil
     {
         private string connectionString;
         private string caminhoBancoDadosSelecionado;
+
+
         public BancoDeDados()
         {
             InitializeComponent();
@@ -19,7 +21,6 @@ namespace PortaFacil
             txtSenha.Text = LastPassword;
             txtBanco.Text = LastCaminho;
             txtDiretorio.Text = LastDiretorio;
-
         }
 
         private void btnSelecionarArquivo_Click_1(object sender, EventArgs e)
