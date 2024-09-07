@@ -673,19 +673,23 @@ namespace PortaFacil
             {
                 cbTipoXml.DropDownStyle = ComboBoxStyle.DropDownList;
                 cbEmpresa.DropDownStyle = ComboBoxStyle.DropDownList;
-                FbDataAdapter da;
-                string query2 = "select * from empresa";
-                da = new FbDataAdapter(query2, banco.ConnectionString);
+
+                string query2 = "select empresa_id, nom_empresa from empresa";
+                FbDataAdapter da = new FbDataAdapter(query2, banco.ConnectionString);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-
                 if (dt.Rows.Count > 0)
                 {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string nomeCompleto = row["nom_empresa"].ToString();
+                        row["nom_empresa"] = $"{row["empresa_id"]} - {nomeCompleto}";
+                    }
+
                     cbEmpresa.DataSource = dt;
                     cbEmpresa.DisplayMember = "nom_empresa";
                     cbEmpresa.ValueMember = "empresa_id";
-
                 }
                 else
                 {

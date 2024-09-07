@@ -10,6 +10,8 @@ using System.Transactions;
 using System.Windows.Forms;
 using System.Xml;
 using FirebirdSql.Data.FirebirdClient;
+using PortaFacil.Controle.Mapeamento_de_combustivel;
+using PortaFacil.Mapeamento_de_Tributacao;
 using static PortaFacil.personalizacao;
 
 namespace PortaFacil
@@ -20,6 +22,10 @@ namespace PortaFacil
         private string pastaXml = string.Empty;
         private BancoDeDados banco;
         private int ultimoProdutoId = 0;
+
+        CodigoTributacao mapearCodigoTributacaoCst = new CodigoTributacao();
+        CstSaida mapeamentoCstSaida = new CstSaida();
+        MapeamentoCombustivel mapearCombustivel = new MapeamentoCombustivel();
         public ImportarProduto()
         {
             InitializeComponent();
@@ -58,19 +64,23 @@ namespace PortaFacil
             {
                 cbTipoXml.DropDownStyle = ComboBoxStyle.DropDownList;
                 cbEmpresa.DropDownStyle = ComboBoxStyle.DropDownList;
-                FbDataAdapter da;
-                string query2 = "select * from empresa";
-                da = new FbDataAdapter(query2, banco.ConnectionString);
+
+                string query2 = "select empresa_id, nom_empresa from empresa";
+                FbDataAdapter da = new FbDataAdapter(query2, banco.ConnectionString);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-
                 if (dt.Rows.Count > 0)
                 {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string nomeCompleto = row["nom_empresa"].ToString();
+                        row["nom_empresa"] = $"{row["empresa_id"]} - {nomeCompleto}";
+                    }
+
                     cbEmpresa.DataSource = dt;
                     cbEmpresa.DisplayMember = "nom_empresa";
                     cbEmpresa.ValueMember = "empresa_id";
-
                 }
                 else
                 {
@@ -82,45 +92,11 @@ namespace PortaFacil
             }
         }
 
+
         private void LerArquivoXmlCFe(string xmlArquivo)
         {
             try
             {
-                if (lvDados == null)
-                {
-                    throw new InvalidOperationException("O controle lvDados não está inicializado.");
-                }
-
-                string[] palavrasChaveCombustivel = { "COMBUSTÍVEL", "GASOLINA", "ETANOL", "DIESEL", "GNV", "BS500", "S500", "S10", "ALCOOL" };
-
-                Dictionary<string, string> cstNames = new Dictionary<string, string>
-        {
-            {"00", "00 - Produto Tributado"},
-            {"10", "10 - Substituição tributária"},
-            {"20", "20 - Redução de base de cálculo"},
-            {"30", "30 - Não incidência"},
-            {"40", "40 - Produto Isento"},
-            {"41", "41 - Produto Isento"},
-            {"50", "50 - Não incidência"},
-            {"51", "51 - Não incidência"},
-            {"60", "60 - Substituição tributária"},
-            {"61", "61 - Monofásica"},
-            {"70", "70 - Redução de base de cálculo"},
-            {"90", "90 - Não incidência"},
-        };
-
-                Dictionary<string, string> cstSaidaNames = new Dictionary<string, string>
-        {
-            {"01", "01 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA BÁSICA"},
-            {"02", "02 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA DIFERENCIADA"},
-            {"04", "04 - OPERAÇÃO TRIBUTÁVEL MONOFÁSICA - REVENDA A ALÍQUOTA ZERO"},
-            {"05", "05 - OPERAÇÃO TRIBUTÁVEL POR SUBSTITUIÇÃO TRIBUTÁRIA"},
-            {"06", "06 - OPERAÇÃO TRIBUTÁVEL A ALÍQUOTA ZERO"},
-            {"07", "07 - OPERAÇÃO ISENTA DA CONTRIBUIÇÃO"},
-            {"08", "08 - OPERACAO SEM INCIDENCIA DA CONTRIBUICÃO"},
-            {"49", "49 - OUTRAS OPERAÇÕES DE SAÍDA"},
-            {"99", "99 - OUTRAS OPERAÇÕES"},
-        };
 
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlArquivo);
@@ -138,7 +114,7 @@ namespace PortaFacil
 
                         foreach (XmlNode childNode in prodNode.ChildNodes)
                         {
-                            foreach (string palavra in palavrasChaveCombustivel)
+                            foreach (string palavra in mapearCombustivel.palavrasChaveCombustivel)
                             {
                                 if (childNode.InnerText.Contains(palavra))
                                 {
@@ -146,6 +122,7 @@ namespace PortaFacil
                                     break;
                                 }
                             }
+
                             if (skipItem)
                             {
                                 break;
@@ -174,15 +151,16 @@ namespace PortaFacil
 
                         // Processar o CST específico para este produto
                         XmlNode cstNode = impostoNode.SelectSingleNode(".//ICMS/*/CST");
-                        string codigoTributacao = cstNode?.InnerText ?? "N/A";
+                        string codigoTributacao = cstNode?.InnerText ?? "Não Encontrado: Padrão Produto Tributado";
 
-                        string cstName = cstNames.ContainsKey(codigoTributacao) ? cstNames[codigoTributacao] : codigoTributacao;
-                        newItem.SubItems.Add(cstName);
+                        string cstNome = mapearCodigoTributacaoCst.GetCstNome(codigoTributacao);
+                        newItem.SubItems.Add(cstNome);
 
                         XmlNode cstSaida = impostoNode.SelectSingleNode(".//PIS/*/CST");
                         string cstSaida1 = cstSaida?.InnerText ?? "Não Encontrado: Padrão para incluir CST 01";
-                        string cstSaidaName = cstSaidaNames.ContainsKey(cstSaida1) ? cstSaidaNames[cstSaida1] : cstSaida1;
-                        newItem.SubItems.Add(cstSaidaName);
+
+                        string cstNomeSaida = mapeamentoCstSaida.GetCstSaidaNome(cstSaida1);
+                        newItem.SubItems.Add(cstNomeSaida);
 
                         XmlNode anp = prodNode.SelectSingleNode(".//obsFiscoDet/xTextoDet");
                         string codigoAnp = anp?.InnerText ?? "";
@@ -226,37 +204,7 @@ namespace PortaFacil
         private void LerArquivoXmlNFCe(string xmlArquivo)
         {
             try
-            {
-                string[] palavrasChaveCombustivel = { "COMBUSTÍVEL", "GASOLINA", "ETANOL", "DIESEL", "GNV", "BS500", "S500", "S10", "ALCOOL" };
-
-                Dictionary<string, string> cstNames = new Dictionary<string, string>
-                {
-                    {"00", "00 - Produto Tributado"},
-                    {"10", "10 - Substituição tributária"},
-                    {"20", "20 - Redução de base de cálculo"},
-                    {"30", "30 - Não incidência"},
-                    {"40", "40 - Produto Isento"},
-                    {"41", "41 - Produto Isento"},
-                    {"50", "50 - Não incidência"},
-                    {"51", "51 - Não incidência"},
-                    {"60", "60 - Substituição tributária"},
-                    {"61", "61 - Monofásica"},
-                    {"70", "70 - Redução de base de cálculo"},
-                    {"90", "90 - Não incidência"},
-                };
-
-                Dictionary<string, string> cstSaidaNames = new Dictionary<string, string>
-                {
-                    {"01", "01 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA BÁSICA"},
-                    {"02", "02 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA DIFERENCIADA"},
-                    {"04", "04 - OPERAÇÃO TRIBUTÁVEL MONOFÁSICA - REVENDA A ALÍQUOTA ZERO"},
-                    {"05", "05 - OPERAÇÃO TRIBUTÁVEL POR SUBSTITUIÇÃO TRIBUTÁRIA"},
-                    {"06", "06 - OPERAÇÃO TRIBUTÁVEL A ALÍQUOTA ZERO"},
-                    {"07", "07 - OPERAÇÃO ISENTA DA CONTRIBUIÇÃO"},
-                    {"08", "08 - OPERACAO SEM INCIDENCIA DA CONTRIBUICÃO"},
-                    {"49", "49 - OUTRAS OPERAÇÕES DE SAÍDA"},
-                    {"99", "99 - OUTRAS OPERAÇÕES"},
-                };
+            {            
 
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlArquivo);
@@ -277,7 +225,7 @@ namespace PortaFacil
 
                         foreach (XmlNode childNode in prodNode.ChildNodes)
                         {
-                            foreach (string palavra in palavrasChaveCombustivel)
+                            foreach (string palavra in mapearCombustivel.palavrasChaveCombustivel)
                             {
                                 if (childNode.InnerText.Contains(palavra))
                                 {
@@ -285,6 +233,7 @@ namespace PortaFacil
                                     break;
                                 }
                             }
+
                             if (skipItem)
                             {
                                 break;
@@ -311,17 +260,16 @@ namespace PortaFacil
                         newItem.SubItems.Add(unidade);
                         newItem.SubItems.Add(preco);
 
-                        // Processar o CST específico para este produto
                         XmlNode cstNode = impostoNode.SelectSingleNode(".//nfe:ICMS/*/nfe:CST", nsmgr);
-                        string codigoTributacao = cstNode?.InnerText ?? "N/A";
+                        string codigoTributacao = cstNode?.InnerText ?? "Não Encontrado: Padrão Produto Tributado";
 
-                        string cstName = cstNames.ContainsKey(codigoTributacao) ? cstNames[codigoTributacao] : codigoTributacao;
-                        newItem.SubItems.Add(cstName);
+                        string cstNome = mapearCodigoTributacaoCst.GetCstNome(codigoTributacao);
+                        newItem.SubItems.Add(cstNome);
 
                         XmlNode cstSaida = impostoNode.SelectSingleNode("//nfe:PIS/*/nfe:CST", nsmgr);
                         string cstSaida1 = cstSaida?.InnerText ?? "Não Encontrado: Padrão para incluir CST 01";
-                        string cstSaidaName = cstSaidaNames.ContainsKey(cstSaida1) ? cstSaidaNames[cstSaida1] : cstSaida1;
-                        newItem.SubItems.Add(cstSaidaName);
+                        string cstNomeSaida = mapeamentoCstSaida.GetCstSaidaNome(cstSaida1);
+                        newItem.SubItems.Add(cstNomeSaida);
 
 
                         XmlNode codigoAnp = prodNode.SelectSingleNode(".//nfe:comb/nfe:cProdANP", nsmgr);
@@ -357,36 +305,6 @@ namespace PortaFacil
         {
             try
             {
-                string[] palavrasChaveCombustivel = { "COMBUSTÍVEL", "GASOLINA", "ETANOL", "DIESEL", "GNV", "BS500", "S500", "S10", "ALCOOL" };
-
-                Dictionary<string, string> cstNames = new Dictionary<string, string>
-                {
-                    {"00", "00 - Produto Tributado"},
-                    {"10", "10 - Substituição tributária"},
-                    {"20", "20 - Redução de base de cálculo"},
-                    {"30", "30 - Não incidência"},
-                    {"40", "40 - Produto Isento"},
-                    {"41", "41 - Produto Isento"},
-                    {"50", "50 - Não incidência"},
-                    {"51", "51 - Não incidência"},
-                    {"60", "60 - Substituição tributária"},
-                    {"61", "61 - Monofásica"},
-                    {"70", "70 - Redução de base de cálculo"},
-                    {"90", "90 - Não incidência"},
-                };
-
-                Dictionary<string, string> cstSaidaNames = new Dictionary<string, string>
-                {
-                    {"01", "01 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA BÁSICA"},
-                    {"02", "02 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA DIFERENCIADA"},
-                    {"04", "04 - OPERAÇÃO TRIBUTÁVEL MONOFÁSICA - REVENDA A ALÍQUOTA ZERO"},
-                    {"05", "05 - OPERAÇÃO TRIBUTÁVEL POR SUBSTITUIÇÃO TRIBUTÁRIA"},
-                    {"06", "06 - OPERAÇÃO TRIBUTÁVEL A ALÍQUOTA ZERO"},
-                    {"07", "07 - OPERAÇÃO ISENTA DA CONTRIBUIÇÃO"},
-                    {"08", "08 - OPERACAO SEM INCIDENCIA DA CONTRIBUICÃO"},
-                    {"49", "49 - OUTRAS OPERAÇÕES DE SAÍDA"},
-                    {"99", "99 - OUTRAS OPERAÇÕES"},
-                };
 
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlArquivo);
@@ -406,7 +324,7 @@ namespace PortaFacil
 
                         foreach (XmlNode childNode in prodNode.ChildNodes)
                         {
-                            foreach (string palavra in palavrasChaveCombustivel)
+                            foreach (string palavra in mapearCombustivel.palavrasChaveCombustivel)
                             {
                                 if (childNode.InnerText.Contains(palavra))
                                 {
@@ -414,6 +332,7 @@ namespace PortaFacil
                                     break;
                                 }
                             }
+
                             if (skipItem)
                             {
                                 break;
@@ -442,15 +361,15 @@ namespace PortaFacil
 
                         // Processar o CST específico para este produto
                         XmlNode cstNode = impostoNode.SelectSingleNode(".//nfe:ICMS/*/nfe:CST", nsmgr);
-                        string codigoTributacao = cstNode?.InnerText ?? "N/A";
+                        string codigoTributacao = cstNode?.InnerText ?? "Não Encontrado: Padrão Produto Tributado";
 
-                        string cstName = cstNames.ContainsKey(codigoTributacao) ? cstNames[codigoTributacao] : codigoTributacao;
-                        newItem.SubItems.Add(cstName);
+                        string cstNome = mapearCodigoTributacaoCst.GetCstNome(codigoTributacao);
+                        newItem.SubItems.Add(cstNome);
 
                         XmlNode cstSaida = impostoNode.SelectSingleNode(".//nfe:PIS/*/nfe:CST", nsmgr);
                         string cstSaida1 = cstSaida?.InnerText ?? "Não Encontrado: Padrão para incluir CST 01";
-                        string cstSaidaName = cstSaidaNames.ContainsKey(cstSaida1) ? cstSaidaNames[cstSaida1] : cstSaida1;
-                        newItem.SubItems.Add(cstSaidaName);
+                        string cstNomeSaida = mapeamentoCstSaida.GetCstSaidaNome(cstSaida1);
+                        newItem.SubItems.Add(cstNomeSaida);
 
                         XmlNode codigoAnp = prodNode.SelectSingleNode(".//nfe:comb/nfe:cProdANP", nsmgr);
                         string codigoAnp1 = codigoAnp?.InnerText;
@@ -502,7 +421,7 @@ namespace PortaFacil
                 case "61 - Monofásica":
                     return 6;
                 default:
-                    throw new ArgumentException($"Código CST '{cst}' não reconhecido.");
+                    return 1;
             }
         }
         private int MapearCodigoUnidade(string unidade)
@@ -576,7 +495,7 @@ namespace PortaFacil
                 case "02 - OPERAÇÃO TRIBUTÁVEL COM ALÍQUOTA DIFERENCIADA":
                     return 9;
                 default:
-                    throw new ArgumentException($"Código não reconhecido.");
+                    return 5;
             }
         }
 
@@ -630,7 +549,7 @@ namespace PortaFacil
                         }
 
                         // Verificar se produto_nivel2 já existe
-                        string descricaoNivel2 = "Produtos Importados";
+                        string descricaoNivel2 = "PRODUTO IMPORTADO";
                         string selectProdutoNivel2 = "SELECT produto_nivel2_id FROM produto_nivel2 WHERE produto_nivel1_id = @produtoNivel1Id AND descricao = @descricao";
                         int produtoNivel2Id;
 
@@ -843,14 +762,14 @@ namespace PortaFacil
 
                     }
 
-                    string insertParametroCstSubstituicaoTributaria = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 32 WHERE pp.ct = 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
+                    string insertParametroCstSubstituicaoTributaria = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 32 WHERE pp.ct = 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'PRODUTO IMPORTADO');";
                     using (FbCommand cmd = new FbCommand(insertParametroCstSubstituicaoTributaria, conn, transaction))
                     {
                         cmd.ExecuteNonQuery();
 
                     }
 
-                    string insertParametroCst = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 33 WHERE pp.ct != 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'Produtos Importados');";
+                    string insertParametroCst = "UPDATE produto pp SET pp.cst_pis_cofins_entrada = 33 WHERE pp.ct != 2 AND pp.produto_nivel2_id IN (SELECT p2.produto_nivel2_id FROM produto_nivel2 p2 WHERE p2.descricao = 'PRODUTO IMPORTADO');";
                     using (FbCommand cmd = new FbCommand(insertParametroCst, conn, transaction))
                     {
                         cmd.ExecuteNonQuery();
@@ -864,7 +783,7 @@ namespace PortaFacil
                         cmd.ExecuteNonQuery();
                     }
 
-                    string insertParametroPrecoCusto = "update PRODUTO_EMPRESA PE set PE.PRC_CUSTO = PE.PRC_VEN_VISTA * 0.70 where PE.empresa_id = @empresa_id and PE.PRC_CUSTO = 0 and PE.PRODUTO_ID in (select PP.PRODUTO_ID from PRODUTO PP left join PRODUTO_NIVEL2 P2 on PP.PRODUTO_NIVEL2_ID = P2.PRODUTO_NIVEL2_ID where P2.DESCRICAO = 'Produtos Importados')";
+                    string insertParametroPrecoCusto = "update PRODUTO_EMPRESA PE set PE.PRC_CUSTO = PE.PRC_VEN_VISTA * 0.70 where PE.empresa_id = @empresa_id and PE.PRC_CUSTO = 0 and PE.PRODUTO_ID in (select PP.PRODUTO_ID from PRODUTO PP left join PRODUTO_NIVEL2 P2 on PP.PRODUTO_NIVEL2_ID = P2.PRODUTO_NIVEL2_ID where P2.DESCRICAO = 'PRODUTO IMPORTADO')";
                     using (FbCommand cmd = new FbCommand(insertParametroPrecoCusto, conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("@empresa_id", cbEmpresa.SelectedValue);

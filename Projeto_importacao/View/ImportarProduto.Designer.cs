@@ -75,9 +75,9 @@
             this.cbEmpresa.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbEmpresa.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbEmpresa.FormattingEnabled = true;
-            this.cbEmpresa.Location = new System.Drawing.Point(677, 47);
+            this.cbEmpresa.Location = new System.Drawing.Point(538, 44);
             this.cbEmpresa.Name = "cbEmpresa";
-            this.cbEmpresa.Size = new System.Drawing.Size(169, 25);
+            this.cbEmpresa.Size = new System.Drawing.Size(308, 25);
             this.cbEmpresa.TabIndex = 22;
             // 
             // cbTipoXml
@@ -89,7 +89,7 @@
             "NFC-e",
             "CF-e",
             "NF-e"});
-            this.cbTipoXml.Location = new System.Drawing.Point(547, 47);
+            this.cbTipoXml.Location = new System.Drawing.Point(538, 97);
             this.cbTipoXml.Name = "cbTipoXml";
             this.cbTipoXml.Size = new System.Drawing.Size(124, 25);
             this.cbTipoXml.TabIndex = 23;
@@ -100,7 +100,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(543, 24);
+            this.label3.Location = new System.Drawing.Point(534, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(119, 20);
             this.label3.TabIndex = 24;
@@ -111,7 +111,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(717, 23);
+            this.label2.Location = new System.Drawing.Point(643, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 21);
             this.label2.TabIndex = 25;

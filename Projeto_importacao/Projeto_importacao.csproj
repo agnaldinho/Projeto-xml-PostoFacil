@@ -226,6 +226,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controle\Mapeamento de combustivel\MapeamentoCombustivel.cs" />
+    <Compile Include="Controle\Mapeamento de Tributacao\CodigoTributacao.cs" />
+    <Compile Include="Controle\Mapeamento de Tributacao\CstSaida.cs" />
     <Compile Include="View\BancoDeDados.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,11 +389,7 @@
     <None Include="bin\Debug\Imagens\info.png" />
     <Content Include="xmlLogo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controller\" />
-    <Folder Include="Dao\" />
-    <Folder Include="Model-Entity\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.5.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.5.5\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
